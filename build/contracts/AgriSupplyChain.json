@@ -19454,12 +19454,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xF69BbB750d9716D1096F9c83C509C979802c341e",
-      "transactionHash": "0xa2b90fcbb4b52f3be8458812b3693de25212b0a4a33c2978bdeb9ee30179653c"
+      "address": "0x92307E92917Af5C05771918f6534161811B8CcC3",
+      "transactionHash": "0xa4ede0fd45d886beff4e4206b21ac49278af7cf3578439f98005293b9d9a06ab"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-01-13T06:01:35.343Z",
+  "updatedAt": "2025-01-14T09:25:40.263Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

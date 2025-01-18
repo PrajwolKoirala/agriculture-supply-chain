@@ -941,190 +941,6 @@ const __TURBOPACK__default__export__ = UserRegistration;
 
 var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, b: __turbopack_worker_blob_url__, g: global, __dirname, x: __turbopack_external_require__, y: __turbopack_external_import__, z: __turbopack_require_stub__ } = __turbopack_context__;
 {
-// 'use client';
-// import { useWeb3 } from "@/contexts/web3Context";
-// import { Button } from "@/components/ui/button";
-// import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-// import { Input } from "@/components/ui/input";
-// import { useState, useEffect } from "react";
-// import { Alert, AlertDescription } from "@/components/ui/alert";
-// import UserRegistration from "./registration/page";
-// import TransactionHistory from "./transaction-history/page";
-// import Web3 from "web3";
-// export default function Home() {
-//   const { connect, disconnect, account, isActive, contract, error } = useWeb3();
-//   const [productName, setProductName] = useState("");
-//   const [productPrice, setProductPrice] = useState("");
-//   const [productId, setProductId] = useState("");
-//   const [connectionStatus, setConnectionStatus] = useState("");
-//   const handleConnection = async () => {
-//     try {
-//       setConnectionStatus("Connecting...");
-//       // First request account access
-//       if (window.ethereum) {
-//         await window.ethereum.request({
-//           method: 'eth_requestAccounts'
-//         });
-//         await connect();
-//       } else {
-//         setConnectionStatus("Please install MetaMask!");
-//       }
-//     } catch (err: any) {
-//       console.error(err);
-//       setConnectionStatus(err.message || "Failed to connect");
-//     }
-//   };
-//   const createProduct = async () => {
-//     if (!contract || !account) {
-//       setConnectionStatus("Please connect your wallet first");
-//       return;
-//     }
-//     try {
-//       await contract.methods
-//         .createProduct(productName, productPrice)
-//         .send({ from: account });
-//       alert("Product created successfully!");
-//       console.log("🚀 ~ file: page.tsx:151 ~ Home ~ productId:", productId);
-//     } catch (error: any) {
-//       console.error("Error creating product:", error);
-//       setConnectionStatus(error.message);
-//     }
-//   };
-//   const handleRoleAction = async (action: string) => {
-//     if (!contract || !account) {
-//       setConnectionStatus("Please connect your wallet first");
-//       return;
-//     }
-//     try {
-//       switch (action) {
-//         case "collect":
-//           await contract.methods.collectProduct(productId).send({ from: account });
-//           break;
-//         case "transport":
-//           await contract.methods.transportProduct(productId).send({ from: account });
-//           break;
-//         case "distribute":
-//           await contract.methods.distributeProduct(productId).send({ from: account });
-//           break;
-//         case "retail":
-//           await contract.methods.sendToRetailer(productId).send({ from: account });
-//           break;
-//         case "purchase":
-//           await contract.methods.purchaseProduct(productId).send({ from: account });
-//           break;
-//       }
-//       alert("Action completed successfully!");
-//     } catch (error: any) {
-//       console.error("Error performing action:", error);
-//       setConnectionStatus(error.message);
-//     }
-//   };
-//   // Check for MetaMask on component mount
-//   useEffect(() => {
-//     if (!window.ethereum) {
-//       setConnectionStatus("MetaMask is not installed. Please install MetaMask to use this application.");
-//     }
-//   }, []);
-//   return (
-//     <div className="container mx-auto p-4">
-//       <Card className="mb-6">
-//         <CardHeader>
-//           <CardTitle>AgriSupplyChain Management</CardTitle>
-//         </CardHeader>
-//         <CardContent>
-//           {connectionStatus && (
-//             <Alert className="mb-4">
-//               <AlertDescription>{connectionStatus}</AlertDescription>
-//             </Alert>
-//           )}
-//           {error && (
-//             <Alert className="mb-4" variant="destructive">
-//               <AlertDescription>{error}</AlertDescription>
-//             </Alert>
-//           )}
-//           {!isActive ? (
-//             <div className="space-y-4">
-//               <p className="text-sm text-gray-500 mb-2">
-//                 Connect your MetaMask wallet to interact with the supply chain.
-//               </p>
-//               <Button
-//                 onClick={handleConnection}
-//                 className="w-full sm:w-auto"
-//               >
-//                 Connect MetaMask
-//               </Button>
-//             </div>
-//           ) : (
-//             <div className="space-y-4">
-//               <p className="text-sm">Connected Account: {account}</p>
-//               <Button onClick={disconnect} variant="outline">
-//                 Disconnect
-//               </Button>
-//             </div>
-//           )}
-//         </CardContent>
-//       </Card>
-//       {isActive && (
-//         <>
-//         <UserRegistration contract={contract} account={account} />
-//         <TransactionHistory
-//       web3={new Web3(window.ethereum)}
-//       contract={contract}
-//       account={account}
-//     />
-//           <Card className="mb-6">
-//             <CardHeader>
-//               <CardTitle>Create New Product</CardTitle>
-//             </CardHeader>
-//             <CardContent className="space-y-4">
-//               <Input
-//                 placeholder="Product Name"
-//                 value={productName}
-//                 onChange={(e) => setProductName(e.target.value)}
-//               />
-//               <Input
-//                 placeholder="Product Price"
-//                 type="number"
-//                 value={productPrice}
-//                 onChange={(e) => setProductPrice(e.target.value)}
-//               />
-//               <Button onClick={createProduct}>Create Product</Button>
-//             </CardContent>
-//           </Card>
-//           <Card>
-//             <CardHeader>
-//               <CardTitle>Product Actions</CardTitle>
-//             </CardHeader>
-//             <CardContent className="space-y-4">
-//               <Input
-//                 placeholder="Product ID"
-//                 value={productId}
-//                 onChange={(e) => setProductId(e.target.value)}
-//               />
-//               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-//                 <Button onClick={() => handleRoleAction("collect")}>
-//                   Collect Product
-//                 </Button>
-//                 <Button onClick={() => handleRoleAction("transport")}>
-//                   Transport Product
-//                 </Button>
-//                 <Button onClick={() => handleRoleAction("distribute")}>
-//                   Distribute Product
-//                 </Button>
-//                 <Button onClick={() => handleRoleAction("retail")}>
-//                   Send to Retailer
-//                 </Button>
-//                 <Button onClick={() => handleRoleAction("purchase")}>
-//                   Purchase Product
-//                 </Button>
-//               </div>
-//             </CardContent>
-//           </Card>
-//         </>
-//       )}
-//     </div>
-//   );
-// }
 // "use client"
 // import React, { useState, useEffect } from 'react';
 // import { useWeb3 } from "@/contexts/web3Context";
@@ -1145,53 +961,6 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 //   LogOut,
 // } from "lucide-react";
 // import UserRegistration from './registration/page';
-// // const UserRegistration = ({ contract, account, onComplete }) => {
-// //   const [role, setRole] = useState("");
-// //   const [error, setError] = useState("");
-// //   const registerUser = async () => {
-// //     try {
-// //       await contract.methods.registerUser(account, role).send({ from: account });
-// //       onComplete();
-// //     } catch (error) {
-// //       setError(error.message);
-// //     }
-// //   };
-// //   return (
-// //     <Card className="max-w-md mx-auto mt-8">
-// //       <CardHeader>
-// //         <CardTitle className="flex items-center gap-2">
-// //           <User className="w-5 h-5" />
-// //           User Registration
-// //         </CardTitle>
-// //       </CardHeader>
-// //       <CardContent className="space-y-4">
-// //         {error && (
-// //           <Alert variant="destructive">
-// //             <AlertDescription>{error}</AlertDescription>
-// //           </Alert>
-// //         )}
-// //         <div className="space-y-2">
-// //           <label className="text-sm font-medium">Select Role</label>
-// //           <select
-// //             className="w-full p-2 border rounded-md"
-// //             value={role}
-// //             onChange={(e) => setRole(e.target.value)}
-// //           >
-// //             <option value="">Select a role</option>
-// //             <option value="FARMER">Farmer</option>
-// //             <option value="COLLECTOR">Collector</option>
-// //             <option value="TRANSPORTER">Transporter</option>
-// //             <option value="DISTRIBUTOR">Distributor</option>
-// //             <option value="RETAILER">Retailer</option>
-// //           </select>
-// //         </div>
-// //         <Button onClick={registerUser} className="w-full">
-// //           Register
-// //         </Button>
-// //       </CardContent>
-// //     </Card>
-// //   );
-// // };
 // const ProductCard = ({ product }) => {
 //   const stateColors = {
 //     Created: "bg-blue-100 text-blue-800",
@@ -1219,43 +988,70 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 // const FarmerDashboard = ({ contract, account }) => {
 //   const [products, setProducts] = useState([]);
 //   const [productName, setProductName] = useState("");
-//   const [productPrice, setProductPrice] = useState("");
+//   const [basePrice, setBasePrice] = useState("");
 //   const [error, setError] = useState("");
+//   const { web3 } = useWeb3();
 //   const createProduct = async () => {
 //     try {
+//       if (!web3) {
+//         setError("Web3 not initialized");
+//         return;
+//       }
 //       await contract.methods
-//         .createProduct(productName, productPrice)
+//         .createProduct(
+//           productName,
+//           web3.utils.toWei(basePrice, 'ether')
+//         )
 //         .send({ from: account });
 //       setProductName("");
-//       setProductPrice("");
-//       fetchProducts();
+//       setBasePrice("");
+//       await fetchProducts();
 //     } catch (error) {
 //       setError(error.message);
 //     }
 //   };
 //   const fetchProducts = async () => {
 //     try {
+//       if (!contract || !web3) {
+//         console.error("Contract or web3 not initialized");
+//         return;
+//       }
 //       const count = await contract.methods.productCount().call();
 //       const fetchedProducts = [];
 //       for (let i = 1; i <= count; i++) {
-//         const product = await contract.methods.getProduct(i).call();
-//         if (product.farmer === account) {
-//           fetchedProducts.push({
-//             id: product.id,
-//             name: product.name,
-//             price: product.price,
-//             state: product.state
-//           });
+//         try {
+//           // Call each method separately and access the returned object properties
+//           const basicInfo = await contract.methods.getProductBasicInfo(i).call();
+//           const fees = await contract.methods.getProductFees(i).call();
+//           const actors = await contract.methods.getProductActors(i).call();
+//           if (basicInfo.isValid && actors.farmer.toLowerCase() === account.toLowerCase()) {
+//             fetchedProducts.push({
+//               id: basicInfo.id,
+//               name: basicInfo.name,
+//               price: web3.utils.fromWei(basicInfo.basePrice, 'ether'),
+//               state: basicInfo.state,
+//               collectorFee: web3.utils.fromWei(fees.collectorFee, 'ether'),
+//               transporterFee: web3.utils.fromWei(fees.transporterFee, 'ether'),
+//               distributorFee: web3.utils.fromWei(fees.distributorFee, 'ether'),
+//               retailerFee: web3.utils.fromWei(fees.retailerFee, 'ether')
+//             });
+//           }
+//         } catch (err) {
+//           console.error(`Error fetching product ${i}:`, err);
+//           continue;
 //         }
 //       }
 //       setProducts(fetchedProducts);
 //     } catch (error) {
 //       console.error("Error fetching products:", error);
+//       setError("Failed to fetch products. Please try again.");
 //     }
 //   };
 //   useEffect(() => {
-//     fetchProducts();
-//   }, []);
+//     if (contract && account) {
+//       fetchProducts();
+//     }
+//   }, [contract, account]);
 //   return (
 //     <div className="space-y-6">
 //       <Card>
@@ -1277,12 +1073,18 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 //             onChange={(e) => setProductName(e.target.value)}
 //           />
 //           <Input
-//             placeholder="Product Price (ETH)"
+//             placeholder="Base Price (ETH)"
 //             type="number"
-//             value={productPrice}
-//             onChange={(e) => setProductPrice(e.target.value)}
+//             value={basePrice}
+//             onChange={(e) => setBasePrice(e.target.value)}
 //           />
-//           <Button onClick={createProduct} className="w-full">Create Product</Button>
+//           <Button
+//             onClick={createProduct}
+//             className="w-full"
+//             disabled={!productName || !basePrice}
+//           >
+//             Create Product
+//           </Button>
 //         </CardContent>
 //       </Card>
 //       <Card>
@@ -1291,9 +1093,15 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 //         </CardHeader>
 //         <CardContent>
 //           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//             {products.map((product) => (
-//               <ProductCard key={product.id} product={product} />
-//             ))}
+//             {products.length === 0 ? (
+//               <p className="text-gray-500 col-span-2 text-center py-4">
+//                 No products found. Create your first product above.
+//               </p>
+//             ) : (
+//               products.map((product) => (
+//                 <ProductCard key={product.id} product={product} />
+//               ))
+//             )}
 //           </div>
 //         </CardContent>
 //       </Card>
@@ -1302,150 +1110,490 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 // };
 // const CollectorDashboard = ({ contract, account }) => {
 //   const [productId, setProductId] = useState("");
+//   const [collectorFee, setCollectorFee] = useState("");
 //   const [error, setError] = useState("");
+//   const [product, setProduct] = useState(null);
+//   const [products, setProducts] = useState([]);
+//   const { web3 } = useWeb3();
+// const [loading, setLoading] = useState(false);
+//   const fetchProduct = async (id) => {
+//     try {
+//       setLoading(true);
+//       setError("");
+//       console.log("Fetching product:", id);
+//       const productInfo = await contract.methods.getProductBasicInfo(id).call();
+//       console.log("Product info:", productInfo);
+//       // Convert state to number for comparison
+//       const productState = Number(productInfo.state);
+//       console.log("Product state:", productState);
+//       if (!productInfo.isValid) {
+//         setError("Product does not exist");
+//         setProduct(null);
+//         return;
+//       }
+//       if (productState !== 0) { // CREATED state = 0
+//         setError("Product not in CREATED state");
+//         setProduct(null);
+//         return;
+//       }
+//       setProduct({
+//         id: productInfo.id,
+//         name: productInfo.name,
+//         basePrice: web3.utils.fromWei(productInfo.basePrice, 'ether'),
+//         state: productState
+//       });
+//       setError("");
+//     } catch (error) {
+//       console.error("Error fetching product:", error);
+//       setError("Error fetching product details");
+//       setProduct(null);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 //   const collectProduct = async () => {
 //     try {
-//       await contract.methods.collectProduct(productId).send({ from: account });
+//       if (!product) {
+//         setError("Please fetch product details first");
+//         return;
+//       }
+//       const collectorFeeWei = web3.utils.toWei(collectorFee, 'ether');
+//       const basePriceWei = web3.utils.toWei(product.basePrice, 'ether');
+//       await contract.methods.collectProduct(productId, collectorFeeWei).send({
+//         from: account,
+//         value: basePriceWei
+//       });
 //       setProductId("");
+//       setCollectorFee("");
+//       setProduct(null);
+//       setError("");
 //     } catch (error) {
 //       setError(error.message);
 //     }
 //   };
 //   return (
-//     <Card>
-//       <CardHeader>
-//         <CardTitle className="flex items-center gap-2">
-//           <Box className="w-5 h-5" />
-//           Collect Products
-//         </CardTitle>
-//       </CardHeader>
-//       <CardContent className="space-y-4">
-//         {error && (
-//           <Alert variant="destructive">
-//             <AlertDescription>{error}</AlertDescription>
-//           </Alert>
-//         )}
-//         <Input
-//           placeholder="Product ID"
-//           value={productId}
-//           onChange={(e) => setProductId(e.target.value)}
-//         />
-//         <Button onClick={collectProduct} className="w-full">
-//           Collect Product
-//         </Button>
-//       </CardContent>
-//     </Card>
+//     <div className="space-y-6">
+//       <Card>
+//         <CardHeader>
+//           <CardTitle className="flex items-center gap-2">
+//             <Box className="w-5 h-5" />
+//             Collect Products
+//           </CardTitle>
+//         </CardHeader>
+//         <CardContent className="space-y-4">
+//           {error && (
+//             <Alert variant="destructive">
+//               <AlertDescription>{error}</AlertDescription>
+//             </Alert>
+//           )}
+//           <div className="flex gap-4">
+//             <Input
+//               placeholder="Product ID"
+//               value={productId}
+//               onChange={(e) => setProductId(e.target.value)}
+//             />
+//             <Button onClick={() => fetchProduct(productId)}>
+//               Fetch Details
+//             </Button>
+//           </div>
+//           {product && (
+//             <>
+//               <div className="p-4 border rounded-md bg-gray-50">
+//                 <p><strong>Name:</strong> {product.name}</p>
+//                 <p><strong>Base Price:</strong> {product.basePrice} ETH</p>
+//                 <p><strong>State:</strong> {['Created', 'Collected', 'In Transit', 'With Distributor', 'With Retailer', 'Sold'][product.state]}</p>
+//               </div>
+//               <Input
+//                 placeholder="Your Collection Fee (ETH)"
+//                 type="number"
+//                 value={collectorFee}
+//                 onChange={(e) => setCollectorFee(e.target.value)}
+//               />
+//             </>
+//           )}
+//           <Button
+//             onClick={collectProduct}
+//             className="w-full"
+//             disabled={!product || !collectorFee}
+//           >
+//             Collect and Pay
+//           </Button>
+//         </CardContent>
+//       </Card>
+//     </div>
 //   );
 // };
 // const TransporterDashboard = ({ contract, account }) => {
 //   const [productId, setProductId] = useState("");
+//   const [transporterFee, setTransporterFee] = useState("");
 //   const [error, setError] = useState("");
+//   const [product, setProduct] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const { web3 } = useWeb3();
+//   const fetchProduct = async (id) => {
+//     try {
+//       setLoading(true);
+//       setError("");
+//       console.log("Fetching product:", id);
+//       const productInfo = await contract.methods.getProductBasicInfo(id).call();
+//       console.log("Product info:", productInfo);
+//       // Convert state to number for comparison
+//       const productState = Number(productInfo.state);
+//       console.log("Product state:", productState);
+//       if (!productInfo.isValid) {
+//         setError("Product does not exist");
+//         setProduct(null);
+//         return;
+//       }
+//       // Check for COLLECTED state (1)
+//       if (productState !== 1) {
+//         setError("Product not available for transport - must be in COLLECTED state");
+//         setProduct(null);
+//         return;
+//       }
+//       // Get collector fee that needs to be paid
+//       const fees = await contract.methods.getProductFees(id).call();
+//       console.log("Product fees:", fees);
+//       setProduct({
+//         id: productInfo.id,
+//         name: productInfo.name,
+//         collectorFee: web3.utils.fromWei(fees.collectorFee, 'ether'),
+//         state: productState
+//       });
+//       setError("");
+//     } catch (error) {
+//       console.error("Error fetching product:", error);
+//       setError("Error fetching product details");
+//       setProduct(null);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 //   const transportProduct = async () => {
 //     try {
-//       await contract.methods.transportProduct(productId).send({ from: account });
+//       if (!product) {
+//         setError("Please fetch product details first");
+//         return;
+//       }
+//       const transporterFeeWei = web3.utils.toWei(transporterFee, 'ether');
+//       const collectorFeeWei = web3.utils.toWei(product.collectorFee, 'ether');
+//       await contract.methods.transportProduct(productId, transporterFeeWei).send({
+//         from: account,
+//         value: collectorFeeWei
+//       });
 //       setProductId("");
+//       setTransporterFee("");
+//       setProduct(null);
+//       setError("");
 //     } catch (error) {
 //       setError(error.message);
 //     }
 //   };
 //   return (
-//     <Card>
-//       <CardHeader>
-//         <CardTitle className="flex items-center gap-2">
-//           <Truck className="w-5 h-5" />
-//           Transport Products
-//         </CardTitle>
-//       </CardHeader>
-//       <CardContent className="space-y-4">
-//         {error && (
-//           <Alert variant="destructive">
-//             <AlertDescription>{error}</AlertDescription>
-//           </Alert>
-//         )}
-//         <Input
-//           placeholder="Product ID"
-//           value={productId}
-//           onChange={(e) => setProductId(e.target.value)}
-//         />
-//         <Button onClick={transportProduct} className="w-full">
-//           Transport Product
-//         </Button>
-//       </CardContent>
-//     </Card>
+//     <div className="space-y-6">
+//       <Card>
+//         <CardHeader>
+//           <CardTitle className="flex items-center gap-2">
+//             <Truck className="w-5 h-5" />
+//             Transport Products
+//           </CardTitle>
+//         </CardHeader>
+//         <CardContent className="space-y-4">
+//           {error && (
+//             <Alert variant="destructive">
+//               <AlertDescription>{error}</AlertDescription>
+//             </Alert>
+//           )}
+//           <div className="flex gap-4">
+//             <Input
+//               placeholder="Product ID"
+//               value={productId}
+//               onChange={(e) => setProductId(e.target.value)}
+//             />
+//             <Button onClick={() => fetchProduct(productId)}>
+//               Fetch Details
+//             </Button>
+//           </div>
+//           {product && (
+//             <>
+//               <div className="p-4 border rounded-md bg-gray-50">
+//                 <p><strong>Name:</strong> {product.name}</p>
+//                 <p><strong>Collector Fee to Pay:</strong> {product.collectorFee} ETH</p>
+//                 <p><strong>State:</strong> {['Created', 'Collected', 'In Transit', 'With Distributor', 'With Retailer', 'Sold'][product.state]}</p>
+//               </div>
+//               <Input
+//                 placeholder="Your Transport Fee (ETH)"
+//                 type="number"
+//                 value={transporterFee}
+//                 onChange={(e) => setTransporterFee(e.target.value)}
+//               />
+//             </>
+//           )}
+//           <Button
+//             onClick={transportProduct}
+//             className="w-full"
+//             disabled={!product || !transporterFee}
+//           >
+//             Transport and Pay
+//           </Button>
+//         </CardContent>
+//       </Card>
+//     </div>
 //   );
 // };
 // const DistributorDashboard = ({ contract, account }) => {
 //   const [productId, setProductId] = useState("");
+//   const [distributorFee, setDistributorFee] = useState("");
 //   const [error, setError] = useState("");
+//   const [product, setProduct] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const { web3 } = useWeb3();
+//   const fetchProduct = async (id) => {
+//     try {
+//       setLoading(true);
+//       setError("");
+//       console.log("Fetching product:", id);
+//       const productInfo = await contract.methods.getProductBasicInfo(id).call();
+//       console.log("Product info:", productInfo);
+//       // Convert state to number for comparison
+//       const productState = Number(productInfo.state);
+//       console.log("Product state:", productState);
+//       if (!productInfo.isValid) {
+//         setError("Product does not exist");
+//         setProduct(null);
+//         return;
+//       }
+//       // Check for IN_TRANSIT state (2)
+//       if (productState !== 2) {
+//         setError("Product not available for distribution - must be in IN_TRANSIT state");
+//         setProduct(null);
+//         return;
+//       }
+//       const fees = await contract.methods.getProductFees(id).call();
+//       console.log("Product fees:", fees);
+//       setProduct({
+//         id: productInfo.id,
+//         name: productInfo.name,
+//         state: productState,
+//         transporterFee: web3.utils.fromWei(fees.transporterFee, 'ether')
+//       });
+//       setError("");
+//     } catch (error) {
+//       console.error("Error fetching product:", error);
+//       setError("Error fetching product details");
+//       setProduct(null);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 //   const distributeProduct = async () => {
 //     try {
-//       await contract.methods.distributeProduct(productId).send({ from: account });
+//       if (!product) {
+//         setError("Please fetch product details first");
+//         return;
+//       }
+//       const distributorFeeWei = web3.utils.toWei(distributorFee, 'ether');
+//       const transporterFeeWei = web3.utils.toWei(product.transporterFee, 'ether');
+//       await contract.methods.distributeProduct(productId, distributorFeeWei).send({
+//         from: account,
+//         value: transporterFeeWei
+//       });
 //       setProductId("");
+//       setDistributorFee("");
+//       setProduct(null);
+//       setError("");
 //     } catch (error) {
 //       setError(error.message);
 //     }
 //   };
 //   return (
-//     <Card>
-//       <CardHeader>
-//         <CardTitle className="flex items-center gap-2">
-//           <Store className="w-5 h-5" />
-//           Distribute Products
-//         </CardTitle>
-//       </CardHeader>
-//       <CardContent className="space-y-4">
-//         {error && (
-//           <Alert variant="destructive">
-//             <AlertDescription>{error}</AlertDescription>
-//           </Alert>
-//         )}
-//         <Input
-//           placeholder="Product ID"
-//           value={productId}
-//           onChange={(e) => setProductId(e.target.value)}
-//         />
-//         <Button onClick={distributeProduct} className="w-full">
-//           Distribute Product
-//         </Button>
-//       </CardContent>
-//     </Card>
+//     <div className="space-y-6">
+//       <Card>
+//         <CardHeader>
+//           <CardTitle className="flex items-center gap-2">
+//             <Store className="w-5 h-5" />
+//             Distribute Products
+//           </CardTitle>
+//         </CardHeader>
+//         <CardContent className="space-y-4">
+//           {error && (
+//             <Alert variant="destructive">
+//               <AlertDescription>{error}</AlertDescription>
+//             </Alert>
+//           )}
+//           <div className="flex gap-4">
+//             <Input
+//               placeholder="Product ID"
+//               value={productId}
+//               onChange={(e) => setProductId(e.target.value)}
+//             />
+//             <Button onClick={() => fetchProduct(productId)}>
+//               Fetch Details
+//             </Button>
+//           </div>
+//           {product && (
+//             <>
+//               <div className="p-4 border rounded-md bg-gray-50">
+//                 <p><strong>Name:</strong> {product.name}</p>
+//                 <p><strong>Transporter Fee to Pay:</strong> {product.transporterFee} ETH</p>
+//                 <p><strong>State:</strong> {['Created', 'Collected', 'In Transit', 'With Distributor', 'With Retailer', 'Sold'][product.state]}</p>
+//               </div>
+//               <Input
+//                 placeholder="Your Distribution Fee (ETH)"
+//                 type="number"
+//                 value={distributorFee}
+//                 onChange={(e) => setDistributorFee(e.target.value)}
+//               />
+//             </>
+//           )}
+//           <Button
+//             onClick={distributeProduct}
+//             className="w-full"
+//             disabled={!product || !distributorFee}
+//           >
+//             Distribute and Pay
+//           </Button>
+//         </CardContent>
+//       </Card>
+//     </div>
 //   );
 // };
 // const RetailerDashboard = ({ contract, account }) => {
 //   const [productId, setProductId] = useState("");
+//   const [retailerFee, setRetailerFee] = useState("");
 //   const [error, setError] = useState("");
+//   const [product, setProduct] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const { web3 } = useWeb3();
+//   // const fetchProduct = async (id) => {
+//   //   try {
+//   //     const productInfo = await contract.methods.getProductBasicInfo(id).call();
+//   //     if (!productInfo.isValid || productInfo.state !== '3') {
+//   //       setError("Product not available for retail");
+//   //       setProduct(null);
+//   //       return;
+//   //     }
+//   //     const fees = await contract.methods.getProductFees(id).call();
+//   //     setProduct({
+//   //       id: productInfo.id,
+//   //       name: productInfo.name,
+//   //       state: productInfo.state,
+//   //       distributorFee: web3.utils.fromWei(fees.distributorFee, 'ether')
+//   //     });
+//   //     setError("");
+//   //   } catch (error) {
+//   //     setError("Error fetching product details");
+//   //     setProduct(null);
+//   //   }
+//   // };
+//   const fetchProduct = async (id) => {
+//     try {
+//       setLoading(true);
+//       setError("");
+//       console.log("Fetching product:", id);
+//       const productInfo = await contract.methods.getProductBasicInfo(id).call();
+//       console.log("Product info:", productInfo);
+//       // Convert state to number for comparison
+//       const productState = Number(productInfo.state);
+//       console.log("Product state:", productState);
+//       if (!productInfo.isValid) {
+//         setError("Product does not exist");
+//         setProduct(null);
+//         return;
+//       }
+//       // Check for WITH_DISTRIBUTOR state (3)
+//       if (productState !== 3) {
+//         setError("Product not available for retail - must be with distributor");
+//         setProduct(null);
+//         return;
+//       }
+//       const fees = await contract.methods.getProductFees(id).call();
+//       console.log("Product fees:", fees);
+//       setProduct({
+//         id: productInfo.id,
+//         name: productInfo.name,
+//         state: productState,
+//         distributorFee: web3.utils.fromWei(fees.distributorFee, 'ether')
+//       });
+//       setError("");
+//     } catch (error) {
+//       console.error("Error fetching product:", error);
+//       setError("Error fetching product details");
+//       setProduct(null);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 //   const sendToRetail = async () => {
 //     try {
-//       await contract.methods.sendToRetailer(productId).send({ from: account });
+//       if (!product) {
+//         setError("Please fetch product details first");
+//         return;
+//       }
+//       const retailerFeeWei = web3.utils.toWei(retailerFee, 'ether');
+//       const distributorFeeWei = web3.utils.toWei(product.distributorFee, 'ether');
+//       await contract.methods.sendToRetailer(productId, retailerFeeWei).send({
+//         from: account,
+//         value: distributorFeeWei
+//       });
 //       setProductId("");
+//       setRetailerFee("");
+//       setProduct(null);
+//       setError("");
 //     } catch (error) {
 //       setError(error.message);
 //     }
 //   };
 //   return (
-//     <Card>
-//       <CardHeader>
-//         <CardTitle className="flex items-center gap-2">
-//           <ShoppingBag className="w-5 h-5" />
-//           Retail Products
-//         </CardTitle>
-//       </CardHeader>
-//       <CardContent className="space-y-4">
-//         {error && (
-//           <Alert variant="destructive">
-//             <AlertDescription>{error}</AlertDescription>
-//           </Alert>
-//         )}
-//         <Input
-//           placeholder="Product ID"
-//           value={productId}
-//           onChange={(e) => setProductId(e.target.value)}
-//         />
-//         <Button onClick={sendToRetail} className="w-full">
-//           Send to Retail
-//         </Button>
-//       </CardContent>
-//     </Card>
+//     <div className="space-y-6">
+//       <Card>
+//         <CardHeader>
+//           <CardTitle className="flex items-center gap-2">
+//             <ShoppingBag className="w-5 h-5" />
+//             Retail Products
+//           </CardTitle>
+//         </CardHeader>
+//         <CardContent className="space-y-4">
+//           {error && (
+//             <Alert variant="destructive">
+//               <AlertDescription>{error}</AlertDescription>
+//             </Alert>
+//           )}
+//           <div className="flex gap-4">
+//             <Input
+//               placeholder="Product ID"
+//               value={productId}
+//               onChange={(e) => setProductId(e.target.value)}
+//             />
+//             <Button onClick={() => fetchProduct(productId)}>
+//               Fetch Details
+//             </Button>
+//           </div>
+//           {product && (
+//             <>
+//               <div className="p-4 border rounded-md bg-gray-50">
+//                 <p><strong>Name:</strong> {product.name}</p>
+//                 <p><strong>Distributor Fee to Pay:</strong> {product.distributorFee} ETH</p>
+//                 <p><strong>State:</strong> {['Created', 'Collected', 'In Transit', 'With Distributor', 'With Retailer', 'Sold'][product.state]}</p>
+//               </div>
+//               <Input
+//                 placeholder="Your Retail Fee (ETH)"
+//                 type="number"
+//                 value={retailerFee}
+//                 onChange={(e) => setRetailerFee(e.target.value)}
+//               />
+//             </>
+//           )}
+//           <Button
+//             onClick={sendToRetail}
+//             className="w-full"
+//             disabled={!product || !retailerFee}
+//           >
+//             Accept and Pay
+//           </Button>
+//         </CardContent>
+//       </Card>
+//     </div>
 //   );
 // };
 // const TransactionHistory = ({ contract, account }) => {
@@ -1682,6 +1830,10 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 //   );
 // }
 __turbopack_esm__({
+    "CollectorDashboard": (()=>CollectorDashboard),
+    "DistributorDashboard": (()=>DistributorDashboard),
+    "RetailerDashboard": (()=>RetailerDashboard),
+    "TransporterDashboard": (()=>TransporterDashboard),
     "default": (()=>Home)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
@@ -1695,10 +1847,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$t
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/ui/badge.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$registration$2f$page$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/app/registration/page.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wheat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wheat$3e$__ = __turbopack_import__("[project]/node_modules/lucide-react/dist/esm/icons/wheat.js [app-ssr] (ecmascript) <export default as Wheat>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__ = __turbopack_import__("[project]/node_modules/lucide-react/dist/esm/icons/box.js [app-ssr] (ecmascript) <export default as Box>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$truck$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Truck$3e$__ = __turbopack_import__("[project]/node_modules/lucide-react/dist/esm/icons/truck.js [app-ssr] (ecmascript) <export default as Truck>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__ = __turbopack_import__("[project]/node_modules/lucide-react/dist/esm/icons/store.js [app-ssr] (ecmascript) <export default as Store>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$bag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingBag$3e$__ = __turbopack_import__("[project]/node_modules/lucide-react/dist/esm/icons/shopping-bag.js [app-ssr] (ecmascript) <export default as ShoppingBag>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$history$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__History$3e$__ = __turbopack_import__("[project]/node_modules/lucide-react/dist/esm/icons/history.js [app-ssr] (ecmascript) <export default as History>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__ = __turbopack_import__("[project]/node_modules/lucide-react/dist/esm/icons/log-out.js [app-ssr] (ecmascript) <export default as LogOut>");
 "use client";
@@ -1734,7 +1882,7 @@ const ProductCard = ({ product })=>{
                             children: product.name
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 828,
+                            lineNumber: 1020,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1742,13 +1890,13 @@ const ProductCard = ({ product })=>{
                             children: product.state
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 829,
+                            lineNumber: 1021,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 827,
+                    lineNumber: 1019,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1759,7 +1907,7 @@ const ProductCard = ({ product })=>{
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 831,
+                    lineNumber: 1023,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1771,18 +1919,145 @@ const ProductCard = ({ product })=>{
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 832,
+                    lineNumber: 1024,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/page.tsx",
-            lineNumber: 826,
+            lineNumber: 1018,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 825,
+        lineNumber: 1017,
+        columnNumber: 5
+    }, this);
+};
+const ProductList = ({ products, onSelect, selectedId, stateLabel })=>{
+    if (!products.length) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "text-center p-4 bg-gray-50 rounded-md",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-gray-500",
+                children: "No products available"
+            }, void 0, false, {
+                fileName: "[project]/src/app/page.tsx",
+                lineNumber: 1034,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/src/app/page.tsx",
+            lineNumber: 1033,
+            columnNumber: 7
+        }, this);
+    }
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4",
+        children: products.map((product)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
+                className: `cursor-pointer transition-all ${selectedId === product.id ? "ring-2 ring-primary" : ""}`,
+                onClick: ()=>onSelect(product.id),
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
+                    className: "p-4",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex justify-between items-start mb-2",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                    className: "font-semibold",
+                                    children: product.name
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 1051,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                    className: "bg-blue-100 text-blue-800",
+                                    children: stateLabel
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 1052,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 1050,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-gray-500",
+                            children: [
+                                "ID: ",
+                                product.id
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 1054,
+                            columnNumber: 13
+                        }, this),
+                        product.basePrice && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-gray-500",
+                            children: [
+                                "Base Price: ",
+                                product.basePrice,
+                                " ETH"
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 1056,
+                            columnNumber: 15
+                        }, this),
+                        product.collectorFee && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-gray-500",
+                            children: [
+                                "Collector Fee: ",
+                                product.collectorFee,
+                                " ETH"
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 1061,
+                            columnNumber: 15
+                        }, this),
+                        product.transporterFee && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-gray-500",
+                            children: [
+                                "Transporter Fee: ",
+                                product.transporterFee,
+                                " ETH"
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 1066,
+                            columnNumber: 15
+                        }, this),
+                        product.distributorFee && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-gray-500",
+                            children: [
+                                "Distributor Fee: ",
+                                product.distributorFee,
+                                " ETH"
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 1071,
+                            columnNumber: 15
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/app/page.tsx",
+                    lineNumber: 1049,
+                    columnNumber: 11
+                }, this)
+            }, product.id, false, {
+                fileName: "[project]/src/app/page.tsx",
+                lineNumber: 1042,
+                columnNumber: 9
+            }, this))
+    }, void 0, false, {
+        fileName: "[project]/src/app/page.tsx",
+        lineNumber: 1040,
         columnNumber: 5
     }, this);
 };
@@ -1866,19 +2141,19 @@ const FarmerDashboard = ({ contract, account })=>{
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 921,
+                                    lineNumber: 1165,
                                     columnNumber: 13
                                 }, this),
                                 "Create New Product"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 920,
+                            lineNumber: 1164,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 919,
+                        lineNumber: 1163,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1890,12 +2165,12 @@ const FarmerDashboard = ({ contract, account })=>{
                                     children: error
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 928,
+                                    lineNumber: 1172,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 927,
+                                lineNumber: 1171,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1904,7 +2179,7 @@ const FarmerDashboard = ({ contract, account })=>{
                                 onChange: (e)=>setProductName(e.target.value)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 931,
+                                lineNumber: 1175,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1914,7 +2189,7 @@ const FarmerDashboard = ({ contract, account })=>{
                                 onChange: (e)=>setBasePrice(e.target.value)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 936,
+                                lineNumber: 1180,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1924,19 +2199,19 @@ const FarmerDashboard = ({ contract, account })=>{
                                 children: "Create Product"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 942,
+                                lineNumber: 1186,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 925,
+                        lineNumber: 1169,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 918,
+                lineNumber: 1162,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -1946,12 +2221,12 @@ const FarmerDashboard = ({ contract, account })=>{
                             children: "My Products"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 954,
+                            lineNumber: 1198,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 953,
+                        lineNumber: 1197,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1962,98 +2237,93 @@ const FarmerDashboard = ({ contract, account })=>{
                                 children: "No products found. Create your first product above."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 959,
+                                lineNumber: 1203,
                                 columnNumber: 15
                             }, this) : products.map((product)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProductCard, {
                                     product: product
                                 }, product.id, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 964,
+                                    lineNumber: 1208,
                                     columnNumber: 17
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 957,
+                            lineNumber: 1201,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 956,
+                        lineNumber: 1200,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 952,
+                lineNumber: 1196,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 917,
+        lineNumber: 1161,
         columnNumber: 5
     }, this);
 };
 const CollectorDashboard = ({ contract, account })=>{
-    const [productId, setProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [availableProducts, setAvailableProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [selectedProductId, setSelectedProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [collectorFee, setCollectorFee] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
-    const [product, setProduct] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
-    const { web3 } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$web3Context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWeb3"])();
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const fetchProduct = async (id)=>{
+    const { web3 } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$web3Context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWeb3"])();
+    const fetchAvailableProducts = async ()=>{
         try {
             setLoading(true);
-            setError("");
-            console.log("Fetching product:", id);
-            const productInfo = await contract.methods.getProductBasicInfo(id).call();
-            console.log("Product info:", productInfo);
-            // Convert state to number for comparison
-            const productState = Number(productInfo.state);
-            console.log("Product state:", productState);
-            if (!productInfo.isValid) {
-                setError("Product does not exist");
-                setProduct(null);
-                return;
+            const count = await contract.methods.productCount().call();
+            const products = [];
+            for(let i = 1; i <= count; i++){
+                const productInfo = await contract.methods.getProductBasicInfo(i).call();
+                if (productInfo.isValid && Number(productInfo.state) === 0) {
+                    products.push({
+                        id: productInfo.id,
+                        name: productInfo.name,
+                        basePrice: web3.utils.fromWei(productInfo.basePrice, "ether"),
+                        state: productInfo.state
+                    });
+                }
             }
-            if (productState !== 0) {
-                // CREATED state = 0
-                setError("Product not in CREATED state");
-                setProduct(null);
-                return;
-            }
-            setProduct({
-                id: productInfo.id,
-                name: productInfo.name,
-                basePrice: web3.utils.fromWei(productInfo.basePrice, "ether"),
-                state: productState
-            });
-            setError("");
+            setAvailableProducts(products);
         } catch (error) {
-            console.error("Error fetching product:", error);
-            setError("Error fetching product details");
-            setProduct(null);
+            console.error("Error fetching products:", error);
+            setError("Failed to fetch available products");
         } finally{
             setLoading(false);
         }
     };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (contract && account) {
+            fetchAvailableProducts();
+        }
+    }, [
+        contract,
+        account
+    ]);
     const collectProduct = async ()=>{
         try {
-            if (!product) {
-                setError("Please fetch product details first");
+            if (!selectedProductId) {
+                setError("Please select a product first");
                 return;
             }
+            const product = availableProducts.find((p)=>p.id === selectedProductId);
             const collectorFeeWei = web3.utils.toWei(collectorFee, "ether");
             const basePriceWei = web3.utils.toWei(product.basePrice, "ether");
-            await contract.methods.collectProduct(productId, collectorFeeWei).send({
+            await contract.methods.collectProduct(selectedProductId, collectorFeeWei).send({
                 from: account,
                 value: basePriceWei
             });
-            setProductId("");
             setCollectorFee("");
-            setProduct(null);
-            setError("");
+            setSelectedProductId(null);
+            await fetchAvailableProducts();
         } catch (error) {
             setError(error.message);
         }
@@ -2064,25 +2334,15 @@ const CollectorDashboard = ({ contract, account })=>{
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardHeader"], {
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
-                        className: "flex items-center gap-2",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
-                                className: "w-5 h-5"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1054,
-                                columnNumber: 13
-                            }, this),
-                            "Collect Products"
-                        ]
-                    }, void 0, true, {
+                        children: "Available Products for Collection"
+                    }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1053,
+                        lineNumber: 1288,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1052,
+                    lineNumber: 1287,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2094,110 +2354,26 @@ const CollectorDashboard = ({ contract, account })=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1061,
+                                lineNumber: 1293,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1060,
+                            lineNumber: 1292,
                             columnNumber: 13
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex gap-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                    placeholder: "Product ID",
-                                    value: productId,
-                                    onChange: (e)=>setProductId(e.target.value)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1065,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                    onClick: ()=>fetchProduct(productId),
-                                    children: "Fetch Details"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1070,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProductList, {
+                            products: availableProducts,
+                            onSelect: setSelectedProductId,
+                            selectedId: selectedProductId,
+                            stateLabel: "Available"
+                        }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1064,
+                            lineNumber: 1297,
                             columnNumber: 11
                         }, this),
-                        product && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                        selectedProductId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-4 border rounded-md bg-gray-50",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Name:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1079,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.name
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1078,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Base Price:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1082,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.basePrice,
-                                                " ETH"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1081,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "State:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1085,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                [
-                                                    "Created",
-                                                    "Collected",
-                                                    "In Transit",
-                                                    "With Distributor",
-                                                    "With Retailer",
-                                                    "Sold"
-                                                ][product.state]
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1084,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1077,
-                                    columnNumber: 15
-                                }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
                                     placeholder: "Your Collection Fee (ETH)",
                                     type: "number",
@@ -2205,101 +2381,95 @@ const CollectorDashboard = ({ contract, account })=>{
                                     onChange: (e)=>setCollectorFee(e.target.value)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1099,
+                                    lineNumber: 1306,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                    onClick: collectProduct,
+                                    className: "w-full",
+                                    disabled: !collectorFee,
+                                    children: "Collect and Pay"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 1312,
                                     columnNumber: 15
                                 }, this)
                             ]
-                        }, void 0, true),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                            onClick: collectProduct,
-                            className: "w-full",
-                            disabled: !product || !collectorFee,
-                            children: "Collect and Pay"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1108,
-                            columnNumber: 11
-                        }, this)
+                        }, void 0, true)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1058,
+                    lineNumber: 1290,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/page.tsx",
-            lineNumber: 1051,
+            lineNumber: 1286,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 1050,
+        lineNumber: 1285,
         columnNumber: 5
     }, this);
 };
 const TransporterDashboard = ({ contract, account })=>{
-    const [productId, setProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [availableProducts, setAvailableProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [selectedProductId, setSelectedProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [transporterFee, setTransporterFee] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
-    const [product, setProduct] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const { web3 } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$web3Context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWeb3"])();
-    const fetchProduct = async (id)=>{
+    const fetchAvailableProducts = async ()=>{
         try {
             setLoading(true);
-            setError("");
-            console.log("Fetching product:", id);
-            const productInfo = await contract.methods.getProductBasicInfo(id).call();
-            console.log("Product info:", productInfo);
-            // Convert state to number for comparison
-            const productState = Number(productInfo.state);
-            console.log("Product state:", productState);
-            if (!productInfo.isValid) {
-                setError("Product does not exist");
-                setProduct(null);
-                return;
+            const count = await contract.methods.productCount().call();
+            const products = [];
+            for(let i = 1; i <= count; i++){
+                const productInfo = await contract.methods.getProductBasicInfo(i).call();
+                if (productInfo.isValid && Number(productInfo.state) === 1) {
+                    const fees = await contract.methods.getProductFees(i).call();
+                    products.push({
+                        id: productInfo.id,
+                        name: productInfo.name,
+                        collectorFee: web3.utils.fromWei(fees.collectorFee, "ether"),
+                        state: productInfo.state
+                    });
+                }
             }
-            // Check for COLLECTED state (1)
-            if (productState !== 1) {
-                setError("Product not available for transport - must be in COLLECTED state");
-                setProduct(null);
-                return;
-            }
-            // Get collector fee that needs to be paid
-            const fees = await contract.methods.getProductFees(id).call();
-            console.log("Product fees:", fees);
-            setProduct({
-                id: productInfo.id,
-                name: productInfo.name,
-                collectorFee: web3.utils.fromWei(fees.collectorFee, "ether"),
-                state: productState
-            });
-            setError("");
+            setAvailableProducts(products);
         } catch (error) {
-            console.error("Error fetching product:", error);
-            setError("Error fetching product details");
-            setProduct(null);
+            console.error("Error fetching products:", error);
+            setError("Failed to fetch available products");
         } finally{
             setLoading(false);
         }
     };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (contract && account) {
+            fetchAvailableProducts();
+        }
+    }, [
+        contract,
+        account
+    ]);
     const transportProduct = async ()=>{
         try {
-            if (!product) {
-                setError("Please fetch product details first");
+            if (!selectedProductId) {
+                setError("Please select a product first");
                 return;
             }
+            const product = availableProducts.find((p)=>p.id === selectedProductId);
             const transporterFeeWei = web3.utils.toWei(transporterFee, "ether");
             const collectorFeeWei = web3.utils.toWei(product.collectorFee, "ether");
-            await contract.methods.transportProduct(productId, transporterFeeWei).send({
+            await contract.methods.transportProduct(selectedProductId, transporterFeeWei).send({
                 from: account,
                 value: collectorFeeWei
             });
-            setProductId("");
             setTransporterFee("");
-            setProduct(null);
-            setError("");
+            setSelectedProductId(null);
+            await fetchAvailableProducts();
         } catch (error) {
             setError(error.message);
         }
@@ -2310,25 +2480,15 @@ const TransporterDashboard = ({ contract, account })=>{
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardHeader"], {
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
-                        className: "flex items-center gap-2",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$truck$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Truck$3e$__["Truck"], {
-                                className: "w-5 h-5"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1208,
-                                columnNumber: 13
-                            }, this),
-                            "Transport Products"
-                        ]
-                    }, void 0, true, {
+                        children: "Products Ready for Transport"
+                    }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1207,
+                        lineNumber: 1398,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1206,
+                    lineNumber: 1397,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2340,111 +2500,26 @@ const TransporterDashboard = ({ contract, account })=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1215,
+                                lineNumber: 1403,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1214,
+                            lineNumber: 1402,
                             columnNumber: 13
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex gap-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                    placeholder: "Product ID",
-                                    value: productId,
-                                    onChange: (e)=>setProductId(e.target.value)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1219,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                    onClick: ()=>fetchProduct(productId),
-                                    children: "Fetch Details"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1224,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProductList, {
+                            products: availableProducts,
+                            onSelect: setSelectedProductId,
+                            selectedId: selectedProductId,
+                            stateLabel: "Ready for Transport"
+                        }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1218,
+                            lineNumber: 1407,
                             columnNumber: 11
                         }, this),
-                        product && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                        selectedProductId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-4 border rounded-md bg-gray-50",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Name:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1233,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.name
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1232,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Collector Fee to Pay:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1236,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.collectorFee,
-                                                " ",
-                                                "ETH"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1235,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "State:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1240,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                [
-                                                    "Created",
-                                                    "Collected",
-                                                    "In Transit",
-                                                    "With Distributor",
-                                                    "With Retailer",
-                                                    "Sold"
-                                                ][product.state]
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1239,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1231,
-                                    columnNumber: 15
-                                }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
                                     placeholder: "Your Transport Fee (ETH)",
                                     type: "number",
@@ -2452,100 +2527,96 @@ const TransporterDashboard = ({ contract, account })=>{
                                     onChange: (e)=>setTransporterFee(e.target.value)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1254,
+                                    lineNumber: 1416,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                    onClick: transportProduct,
+                                    className: "w-full",
+                                    disabled: !transporterFee,
+                                    children: "Transport and Pay"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 1422,
                                     columnNumber: 15
                                 }, this)
                             ]
-                        }, void 0, true),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                            onClick: transportProduct,
-                            className: "w-full",
-                            disabled: !product || !transporterFee,
-                            children: "Transport and Pay"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1263,
-                            columnNumber: 11
-                        }, this)
+                        }, void 0, true)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1212,
+                    lineNumber: 1400,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/page.tsx",
-            lineNumber: 1205,
+            lineNumber: 1396,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 1204,
+        lineNumber: 1395,
         columnNumber: 5
     }, this);
 };
 const DistributorDashboard = ({ contract, account })=>{
-    const [productId, setProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [availableProducts, setAvailableProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [selectedProductId, setSelectedProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [distributorFee, setDistributorFee] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
-    const [product, setProduct] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const { web3 } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$web3Context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWeb3"])();
-    const fetchProduct = async (id)=>{
+    const fetchAvailableProducts = async ()=>{
         try {
             setLoading(true);
-            setError("");
-            console.log("Fetching product:", id);
-            const productInfo = await contract.methods.getProductBasicInfo(id).call();
-            console.log("Product info:", productInfo);
-            // Convert state to number for comparison
-            const productState = Number(productInfo.state);
-            console.log("Product state:", productState);
-            if (!productInfo.isValid) {
-                setError("Product does not exist");
-                setProduct(null);
-                return;
+            const count = await contract.methods.productCount().call();
+            const products = [];
+            for(let i = 1; i <= count; i++){
+                const productInfo = await contract.methods.getProductBasicInfo(i).call();
+                if (productInfo.isValid && Number(productInfo.state) === 2) {
+                    // IN_TRANSIT state
+                    const fees = await contract.methods.getProductFees(i).call();
+                    products.push({
+                        id: productInfo.id,
+                        name: productInfo.name,
+                        transporterFee: web3.utils.fromWei(fees.transporterFee, "ether"),
+                        state: productInfo.state
+                    });
+                }
             }
-            // Check for IN_TRANSIT state (2)
-            if (productState !== 2) {
-                setError("Product not available for distribution - must be in IN_TRANSIT state");
-                setProduct(null);
-                return;
-            }
-            const fees = await contract.methods.getProductFees(id).call();
-            console.log("Product fees:", fees);
-            setProduct({
-                id: productInfo.id,
-                name: productInfo.name,
-                state: productState,
-                transporterFee: web3.utils.fromWei(fees.transporterFee, "ether")
-            });
-            setError("");
+            setAvailableProducts(products);
         } catch (error) {
-            console.error("Error fetching product:", error);
-            setError("Error fetching product details");
-            setProduct(null);
+            console.error("Error fetching products:", error);
+            setError("Failed to fetch available products");
         } finally{
             setLoading(false);
         }
     };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (contract && account) {
+            fetchAvailableProducts();
+        }
+    }, [
+        contract,
+        account
+    ]);
     const distributeProduct = async ()=>{
         try {
-            if (!product) {
-                setError("Please fetch product details first");
+            if (!selectedProductId) {
+                setError("Please select a product first");
                 return;
             }
+            const product = availableProducts.find((p)=>p.id === selectedProductId);
             const distributorFeeWei = web3.utils.toWei(distributorFee, "ether");
             const transporterFeeWei = web3.utils.toWei(product.transporterFee, "ether");
-            await contract.methods.distributeProduct(productId, distributorFeeWei).send({
+            await contract.methods.distributeProduct(selectedProductId, distributorFeeWei).send({
                 from: account,
                 value: transporterFeeWei
             });
-            setProductId("");
             setDistributorFee("");
-            setProduct(null);
-            setError("");
+            setSelectedProductId(null);
+            await fetchAvailableProducts();
         } catch (error) {
             setError(error.message);
         }
@@ -2556,25 +2627,15 @@ const DistributorDashboard = ({ contract, account })=>{
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardHeader"], {
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
-                        className: "flex items-center gap-2",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__["Store"], {
-                                className: "w-5 h-5"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1365,
-                                columnNumber: 13
-                            }, this),
-                            "Distribute Products"
-                        ]
-                    }, void 0, true, {
+                        children: "Products Ready for Distribution"
+                    }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1364,
+                        lineNumber: 1512,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1363,
+                    lineNumber: 1511,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2586,110 +2647,26 @@ const DistributorDashboard = ({ contract, account })=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1372,
+                                lineNumber: 1517,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1371,
+                            lineNumber: 1516,
                             columnNumber: 13
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex gap-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                    placeholder: "Product ID",
-                                    value: productId,
-                                    onChange: (e)=>setProductId(e.target.value)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1376,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                    onClick: ()=>fetchProduct(productId),
-                                    children: "Fetch Details"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1381,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProductList, {
+                            products: availableProducts,
+                            onSelect: setSelectedProductId,
+                            selectedId: selectedProductId,
+                            stateLabel: "In Transit"
+                        }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1375,
+                            lineNumber: 1521,
                             columnNumber: 11
                         }, this),
-                        product && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                        selectedProductId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-4 border rounded-md bg-gray-50",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Name:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1390,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.name
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1389,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Transporter Fee to Pay:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1393,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.transporterFee,
-                                                " ETH"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1392,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "State:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1397,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                [
-                                                    "Created",
-                                                    "Collected",
-                                                    "In Transit",
-                                                    "With Distributor",
-                                                    "With Retailer",
-                                                    "Sold"
-                                                ][product.state]
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1396,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1388,
-                                    columnNumber: 15
-                                }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
                                     placeholder: "Your Distribution Fee (ETH)",
                                     type: "number",
@@ -2697,121 +2674,96 @@ const DistributorDashboard = ({ contract, account })=>{
                                     onChange: (e)=>setDistributorFee(e.target.value)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1411,
+                                    lineNumber: 1530,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                    onClick: distributeProduct,
+                                    className: "w-full",
+                                    disabled: !distributorFee,
+                                    children: "Distribute and Pay"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 1536,
                                     columnNumber: 15
                                 }, this)
                             ]
-                        }, void 0, true),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                            onClick: distributeProduct,
-                            className: "w-full",
-                            disabled: !product || !distributorFee,
-                            children: "Distribute and Pay"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1420,
-                            columnNumber: 11
-                        }, this)
+                        }, void 0, true)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1369,
+                    lineNumber: 1514,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/page.tsx",
-            lineNumber: 1362,
+            lineNumber: 1510,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 1361,
+        lineNumber: 1509,
         columnNumber: 5
     }, this);
 };
 const RetailerDashboard = ({ contract, account })=>{
-    const [productId, setProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [availableProducts, setAvailableProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [selectedProductId, setSelectedProductId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [retailerFee, setRetailerFee] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
-    const [product, setProduct] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const { web3 } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$web3Context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWeb3"])();
-    // const fetchProduct = async (id) => {
-    //   try {
-    //     const productInfo = await contract.methods.getProductBasicInfo(id).call();
-    //     if (!productInfo.isValid || productInfo.state !== '3') {
-    //       setError("Product not available for retail");
-    //       setProduct(null);
-    //       return;
-    //     }
-    //     const fees = await contract.methods.getProductFees(id).call();
-    //     setProduct({
-    //       id: productInfo.id,
-    //       name: productInfo.name,
-    //       state: productInfo.state,
-    //       distributorFee: web3.utils.fromWei(fees.distributorFee, 'ether')
-    //     });
-    //     setError("");
-    //   } catch (error) {
-    //     setError("Error fetching product details");
-    //     setProduct(null);
-    //   }
-    // };
-    const fetchProduct = async (id)=>{
+    const fetchAvailableProducts = async ()=>{
         try {
             setLoading(true);
-            setError("");
-            console.log("Fetching product:", id);
-            const productInfo = await contract.methods.getProductBasicInfo(id).call();
-            console.log("Product info:", productInfo);
-            // Convert state to number for comparison
-            const productState = Number(productInfo.state);
-            console.log("Product state:", productState);
-            if (!productInfo.isValid) {
-                setError("Product does not exist");
-                setProduct(null);
-                return;
+            const count = await contract.methods.productCount().call();
+            const products = [];
+            for(let i = 1; i <= count; i++){
+                const productInfo = await contract.methods.getProductBasicInfo(i).call();
+                if (productInfo.isValid && Number(productInfo.state) === 3) {
+                    // WITH_DISTRIBUTOR state
+                    const fees = await contract.methods.getProductFees(i).call();
+                    products.push({
+                        id: productInfo.id,
+                        name: productInfo.name,
+                        distributorFee: web3.utils.fromWei(fees.distributorFee, "ether"),
+                        state: productInfo.state
+                    });
+                }
             }
-            // Check for WITH_DISTRIBUTOR state (3)
-            if (productState !== 3) {
-                setError("Product not available for retail - must be with distributor");
-                setProduct(null);
-                return;
-            }
-            const fees = await contract.methods.getProductFees(id).call();
-            console.log("Product fees:", fees);
-            setProduct({
-                id: productInfo.id,
-                name: productInfo.name,
-                state: productState,
-                distributorFee: web3.utils.fromWei(fees.distributorFee, "ether")
-            });
-            setError("");
+            setAvailableProducts(products);
         } catch (error) {
-            console.error("Error fetching product:", error);
-            setError("Error fetching product details");
-            setProduct(null);
+            console.error("Error fetching products:", error);
+            setError("Failed to fetch available products");
         } finally{
             setLoading(false);
         }
     };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (contract && account) {
+            fetchAvailableProducts();
+        }
+    }, [
+        contract,
+        account
+    ]);
     const sendToRetail = async ()=>{
         try {
-            if (!product) {
-                setError("Please fetch product details first");
+            if (!selectedProductId) {
+                setError("Please select a product first");
                 return;
             }
+            const product = availableProducts.find((p)=>p.id === selectedProductId);
             const retailerFeeWei = web3.utils.toWei(retailerFee, "ether");
             const distributorFeeWei = web3.utils.toWei(product.distributorFee, "ether");
-            await contract.methods.sendToRetailer(productId, retailerFeeWei).send({
+            await contract.methods.sendToRetailer(selectedProductId, retailerFeeWei).send({
                 from: account,
                 value: distributorFeeWei
             });
-            setProductId("");
             setRetailerFee("");
-            setProduct(null);
-            setError("");
+            setSelectedProductId(null);
+            await fetchAvailableProducts();
         } catch (error) {
             setError(error.message);
         }
@@ -2822,25 +2774,15 @@ const RetailerDashboard = ({ contract, account })=>{
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardHeader"], {
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
-                        className: "flex items-center gap-2",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$bag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingBag$3e$__["ShoppingBag"], {
-                                className: "w-5 h-5"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1542,
-                                columnNumber: 13
-                            }, this),
-                            "Retail Products"
-                        ]
-                    }, void 0, true, {
+                        children: "Products Available for Retail"
+                    }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1541,
+                        lineNumber: 1626,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1540,
+                    lineNumber: 1625,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2852,110 +2794,26 @@ const RetailerDashboard = ({ contract, account })=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1549,
+                                lineNumber: 1631,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1548,
+                            lineNumber: 1630,
                             columnNumber: 13
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex gap-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                    placeholder: "Product ID",
-                                    value: productId,
-                                    onChange: (e)=>setProductId(e.target.value)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1553,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                    onClick: ()=>fetchProduct(productId),
-                                    children: "Fetch Details"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1558,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProductList, {
+                            products: availableProducts,
+                            onSelect: setSelectedProductId,
+                            selectedId: selectedProductId,
+                            stateLabel: "With Distributor"
+                        }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1552,
+                            lineNumber: 1635,
                             columnNumber: 11
                         }, this),
-                        product && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                        selectedProductId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-4 border rounded-md bg-gray-50",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Name:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1567,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.name
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1566,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "Distributor Fee to Pay:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1570,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                product.distributorFee,
-                                                " ETH"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1569,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                    children: "State:"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1574,
-                                                    columnNumber: 19
-                                                }, this),
-                                                " ",
-                                                [
-                                                    "Created",
-                                                    "Collected",
-                                                    "In Transit",
-                                                    "With Distributor",
-                                                    "With Retailer",
-                                                    "Sold"
-                                                ][product.state]
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1573,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1565,
-                                    columnNumber: 15
-                                }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
                                     placeholder: "Your Retail Fee (ETH)",
                                     type: "number",
@@ -2963,39 +2821,40 @@ const RetailerDashboard = ({ contract, account })=>{
                                     onChange: (e)=>setRetailerFee(e.target.value)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1588,
+                                    lineNumber: 1644,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                    onClick: sendToRetail,
+                                    className: "w-full",
+                                    disabled: !retailerFee,
+                                    children: "Accept and Pay"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 1650,
                                     columnNumber: 15
                                 }, this)
                             ]
-                        }, void 0, true),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                            onClick: sendToRetail,
-                            className: "w-full",
-                            disabled: !product || !retailerFee,
-                            children: "Accept and Pay"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1597,
-                            columnNumber: 11
-                        }, this)
+                        }, void 0, true)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1546,
+                    lineNumber: 1628,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/page.tsx",
-            lineNumber: 1539,
+            lineNumber: 1624,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 1538,
+        lineNumber: 1623,
         columnNumber: 5
     }, this);
 };
+;
 const TransactionHistory = ({ contract, account })=>{
     const [transactions, setTransactions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -3025,19 +2884,19 @@ const TransactionHistory = ({ contract, account })=>{
                             className: "w-5 h-5"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1637,
+                            lineNumber: 1696,
                             columnNumber: 11
                         }, this),
                         "Transaction History"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1636,
+                    lineNumber: 1695,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1635,
+                lineNumber: 1694,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3055,7 +2914,7 @@ const TransactionHistory = ({ contract, account })=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1646,
+                                        lineNumber: 1705,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3066,7 +2925,7 @@ const TransactionHistory = ({ contract, account })=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1649,
+                                        lineNumber: 1708,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3077,34 +2936,34 @@ const TransactionHistory = ({ contract, account })=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1652,
+                                        lineNumber: 1711,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1645,
+                                lineNumber: 1704,
                                 columnNumber: 15
                             }, this)
                         }, index, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1644,
+                            lineNumber: 1703,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1642,
+                    lineNumber: 1701,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1641,
+                lineNumber: 1700,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 1634,
+        lineNumber: 1693,
         columnNumber: 5
     }, this);
 };
@@ -3126,7 +2985,7 @@ const DashboardLayout = ({ children, userRole, onDisconnect })=>{
                                         className: "w-6 h-6"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1681,
+                                        lineNumber: 1740,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -3134,13 +2993,13 @@ const DashboardLayout = ({ children, userRole, onDisconnect })=>{
                                         children: "AgriSupplyChain"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1682,
+                                        lineNumber: 1741,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1680,
+                                lineNumber: 1739,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3153,7 +3012,7 @@ const DashboardLayout = ({ children, userRole, onDisconnect })=>{
                                                 className: "w-2 h-2 bg-green-500 rounded-full animate-pulse"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1686,
+                                                lineNumber: 1745,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3161,13 +3020,13 @@ const DashboardLayout = ({ children, userRole, onDisconnect })=>{
                                                 children: userRole
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1687,
+                                                lineNumber: 1746,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1685,
+                                        lineNumber: 1744,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3179,36 +3038,36 @@ const DashboardLayout = ({ children, userRole, onDisconnect })=>{
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1697,
+                                                lineNumber: 1756,
                                                 columnNumber: 17
                                             }, this),
                                             "Disconnect"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1692,
+                                        lineNumber: 1751,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1684,
+                                lineNumber: 1743,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1679,
+                        lineNumber: 1738,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1678,
+                    lineNumber: 1737,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1677,
+                lineNumber: 1736,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -3218,12 +3077,12 @@ const DashboardLayout = ({ children, userRole, onDisconnect })=>{
                     children: children
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1706,
+                    lineNumber: 1765,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1705,
+                lineNumber: 1764,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
@@ -3233,18 +3092,18 @@ const DashboardLayout = ({ children, userRole, onDisconnect })=>{
                     children: "© 2024 AgriSupplyChain. All rights reserved."
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1712,
+                    lineNumber: 1771,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1711,
+                lineNumber: 1770,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 1676,
+        lineNumber: 1735,
         columnNumber: 5
     }, this);
 };
@@ -3309,7 +3168,7 @@ function Home() {
                     account: account
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1779,
+                    lineNumber: 1838,
                     columnNumber: 16
                 }, this);
             case "COLLECTOR":
@@ -3318,7 +3177,7 @@ function Home() {
                     account: account
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1781,
+                    lineNumber: 1840,
                     columnNumber: 16
                 }, this);
             case "TRANSPORTER":
@@ -3327,7 +3186,7 @@ function Home() {
                     account: account
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1783,
+                    lineNumber: 1842,
                     columnNumber: 16
                 }, this);
             case "DISTRIBUTOR":
@@ -3336,7 +3195,7 @@ function Home() {
                     account: account
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1785,
+                    lineNumber: 1844,
                     columnNumber: 16
                 }, this);
             case "RETAILER":
@@ -3345,7 +3204,7 @@ function Home() {
                     account: account
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1787,
+                    lineNumber: 1846,
                     columnNumber: 16
                 }, this);
             default:
@@ -3356,17 +3215,17 @@ function Home() {
                             children: "Unknown role or role not assigned"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1792,
+                            lineNumber: 1851,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1791,
+                        lineNumber: 1850,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1790,
+                    lineNumber: 1849,
                     columnNumber: 11
                 }, this);
         }
@@ -3388,17 +3247,17 @@ function Home() {
                                         className: "w-12 h-12 text-green-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1808,
+                                        lineNumber: 1867,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1807,
+                                    lineNumber: 1866,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1806,
+                                lineNumber: 1865,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3408,7 +3267,7 @@ function Home() {
                                         children: "Welcome to AgriSupplyChain"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1812,
+                                        lineNumber: 1871,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3416,19 +3275,19 @@ function Home() {
                                         children: "Connect your wallet to start managing your agricultural supply chain"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1815,
+                                        lineNumber: 1874,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1811,
+                                lineNumber: 1870,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1805,
+                        lineNumber: 1864,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3441,12 +3300,12 @@ function Home() {
                                     children: connectionStatus
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1825,
+                                    lineNumber: 1884,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1824,
+                                lineNumber: 1883,
                                 columnNumber: 15
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Alert"], {
@@ -3457,12 +3316,12 @@ function Home() {
                                     children: error
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1836,
+                                    lineNumber: 1895,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1832,
+                                lineNumber: 1891,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3477,25 +3336,25 @@ function Home() {
                                             className: "w-6 h-6"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1847,
+                                            lineNumber: 1906,
                                             columnNumber: 17
                                         }, this),
                                         "Connect with MetaMask"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1843,
+                                    lineNumber: 1902,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1842,
+                                lineNumber: 1901,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1822,
+                        lineNumber: 1881,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3510,14 +3369,14 @@ function Home() {
                                             className: "w-2 h-2 bg-green-500 rounded-full animate-pulse"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1860,
+                                            lineNumber: 1919,
                                             columnNumber: 17
                                         }, this),
                                         "Network Status: Active"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1859,
+                                    lineNumber: 1918,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -3526,29 +3385,29 @@ function Home() {
                                     children: "Need Help?"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1863,
+                                    lineNumber: 1922,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1858,
+                            lineNumber: 1917,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1857,
+                        lineNumber: 1916,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1804,
+                lineNumber: 1863,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/page.tsx",
-            lineNumber: 1803,
+            lineNumber: 1862,
             columnNumber: 7
         }, this);
     }
@@ -3560,12 +3419,12 @@ function Home() {
                 account: account
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1876,
+                lineNumber: 1935,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/page.tsx",
-            lineNumber: 1875,
+            lineNumber: 1934,
             columnNumber: 7
         }, this);
     }
@@ -3586,7 +3445,7 @@ function Home() {
                                         className: "w-6 h-6"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1887,
+                                        lineNumber: 1946,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -3594,13 +3453,13 @@ function Home() {
                                         children: "AgriSupplyChain"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1888,
+                                        lineNumber: 1947,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1886,
+                                lineNumber: 1945,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3613,7 +3472,7 @@ function Home() {
                                                 className: "w-2 h-2 bg-green-500 rounded-full animate-pulse"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1892,
+                                                lineNumber: 1951,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3621,13 +3480,13 @@ function Home() {
                                                 children: userRole
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1893,
+                                                lineNumber: 1952,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1891,
+                                        lineNumber: 1950,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3639,36 +3498,36 @@ function Home() {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1903,
+                                                lineNumber: 1962,
                                                 columnNumber: 17
                                             }, this),
                                             "Disconnect"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1898,
+                                        lineNumber: 1957,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1890,
+                                lineNumber: 1949,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/page.tsx",
-                        lineNumber: 1885,
+                        lineNumber: 1944,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1884,
+                    lineNumber: 1943,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1883,
+                lineNumber: 1942,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -3685,7 +3544,7 @@ function Home() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1913,
+                            lineNumber: 1972,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3705,12 +3564,12 @@ function Home() {
                                                     children: "Dashboard"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1924,
+                                                    lineNumber: 1983,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1920,
+                                                lineNumber: 1979,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -3723,25 +3582,25 @@ function Home() {
                                                             className: "w-4 h-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/page.tsx",
-                                                            lineNumber: 1934,
+                                                            lineNumber: 1993,
                                                             columnNumber: 21
                                                         }, this),
                                                         "Transaction History"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/page.tsx",
-                                                    lineNumber: 1933,
+                                                    lineNumber: 1992,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/page.tsx",
-                                                lineNumber: 1929,
+                                                lineNumber: 1988,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1919,
+                                        lineNumber: 1978,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -3750,7 +3609,7 @@ function Home() {
                                         children: renderDashboard()
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1940,
+                                        lineNumber: 1999,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -3761,34 +3620,34 @@ function Home() {
                                             account: account
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/page.tsx",
-                                            lineNumber: 1945,
+                                            lineNumber: 2004,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/page.tsx",
-                                        lineNumber: 1944,
+                                        lineNumber: 2003,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/page.tsx",
-                                lineNumber: 1918,
+                                lineNumber: 1977,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1917,
+                            lineNumber: 1976,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1912,
+                    lineNumber: 1971,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1911,
+                lineNumber: 1970,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
@@ -3800,7 +3659,7 @@ function Home() {
                             children: "© 2024 AgriSupplyChain"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1954,
+                            lineNumber: 2013,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3810,37 +3669,37 @@ function Home() {
                                     className: "w-2 h-2 bg-green-500 rounded-full animate-pulse"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1956,
+                                    lineNumber: 2015,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     children: "Connected to Blockchain"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/page.tsx",
-                                    lineNumber: 1957,
+                                    lineNumber: 2016,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/page.tsx",
-                            lineNumber: 1955,
+                            lineNumber: 2014,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/page.tsx",
-                    lineNumber: 1953,
+                    lineNumber: 2012,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 1952,
+                lineNumber: 2011,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 1882,
+        lineNumber: 1941,
         columnNumber: 5
     }, this);
 }

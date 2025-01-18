@@ -8,7 +8,16 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: "0.8.0"  // This should match your contract pragma
+      version: "0.8.0",  // This should match your contract pragma
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200,
+          details: {
+            yul: false
+          }
+        },
+      },
     }
   }
 };

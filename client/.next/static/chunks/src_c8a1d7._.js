@@ -20,12 +20,62 @@ const getWeb3 = ()=>{
     }
     return null;
 };
-const CONTRACT_ADDRESS = "0x92307E92917Af5C05771918f6534161811B8CcC3"; // Replace after deployment
+const CONTRACT_ADDRESS = "0x8ABA3a3533680d4C0f86C25b30842E25dB9f2A9a"; // Replace after deployment
 const CONTRACT_ABI = [
     {
         "inputs": [],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "productId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "entity",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "FeeAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "PaymentProcessed",
+        "type": "event"
     },
     {
         "anonymous": false,
@@ -69,7 +119,7 @@ const CONTRACT_ABI = [
             },
             {
                 "indexed": false,
-                "internalType": "enum AgriSupplyChain.ProductState",
+                "internalType": "uint8",
                 "name": "newState",
                 "type": "uint8"
             }
@@ -107,54 +157,100 @@ const CONTRACT_ABI = [
                 "type": "uint256"
             },
             {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "basePrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isValid",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isPaid",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct ProductStructs.ProductDetails",
+                "name": "details",
+                "type": "tuple"
             },
             {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "farmer",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collector",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "transporter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "distributor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "retailer",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "consumer",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct ProductStructs.ProductActors",
+                "name": "actors",
+                "type": "tuple"
             },
             {
-                "internalType": "address",
-                "name": "farmer",
-                "type": "address"
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "collectorFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "transporterFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "distributorFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "retailerFee",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ProductStructs.ProductFees",
+                "name": "fees",
+                "type": "tuple"
             },
             {
-                "internalType": "address",
-                "name": "collector",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "transporter",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "distributor",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "retailer",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "consumer",
-                "type": "address"
-            },
-            {
-                "internalType": "enum AgriSupplyChain.ProductState",
+                "internalType": "uint8",
                 "name": "state",
                 "type": "uint8"
-            },
-            {
-                "internalType": "bool",
-                "name": "isValid",
-                "type": "bool"
             }
         ],
         "stateMutability": "view",
@@ -208,7 +304,7 @@ const CONTRACT_ABI = [
             },
             {
                 "internalType": "uint256",
-                "name": "_price",
+                "name": "_basePrice",
                 "type": "uint256"
             }
         ],
@@ -223,38 +319,56 @@ const CONTRACT_ABI = [
                 "internalType": "uint256",
                 "name": "_productId",
                 "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_collectorFee",
+                "type": "uint256"
             }
         ],
         "name": "collectProduct",
         "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "stateMutability": "payable",
+        "type": "function",
+        "payable": true
     },
     {
         "inputs": [
             {
                 "internalType": "uint256",
                 "name": "_productId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_transporterFee",
                 "type": "uint256"
             }
         ],
         "name": "transportProduct",
         "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "stateMutability": "payable",
+        "type": "function",
+        "payable": true
     },
     {
         "inputs": [
             {
                 "internalType": "uint256",
                 "name": "_productId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_distributorFee",
                 "type": "uint256"
             }
         ],
         "name": "distributeProduct",
         "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "stateMutability": "payable",
+        "type": "function",
+        "payable": true
     },
     {
         "inputs": [
@@ -262,12 +376,18 @@ const CONTRACT_ABI = [
                 "internalType": "uint256",
                 "name": "_productId",
                 "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_retailerFee",
+                "type": "uint256"
             }
         ],
         "name": "sendToRetailer",
         "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "stateMutability": "payable",
+        "type": "function",
+        "payable": true
     },
     {
         "inputs": [
@@ -279,8 +399,9 @@ const CONTRACT_ABI = [
         ],
         "name": "purchaseProduct",
         "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "stateMutability": "payable",
+        "type": "function",
+        "payable": true
     },
     {
         "inputs": [
@@ -290,7 +411,7 @@ const CONTRACT_ABI = [
                 "type": "uint256"
             }
         ],
-        "name": "getProduct",
+        "name": "getProductBasicInfo",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -304,9 +425,69 @@ const CONTRACT_ABI = [
             },
             {
                 "internalType": "uint256",
-                "name": "price",
+                "name": "basePrice",
                 "type": "uint256"
             },
+            {
+                "internalType": "uint8",
+                "name": "state",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bool",
+                "name": "isValid",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_productId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getProductFees",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "collectorFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "transporterFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "distributorFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "retailerFee",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_productId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getProductActors",
+        "outputs": [
             {
                 "internalType": "address",
                 "name": "farmer",
@@ -336,11 +517,26 @@ const CONTRACT_ABI = [
                 "internalType": "address",
                 "name": "consumer",
                 "type": "address"
-            },
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
             {
-                "internalType": "enum AgriSupplyChain.ProductState",
-                "name": "state",
-                "type": "uint8"
+                "internalType": "uint256",
+                "name": "_productId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTotalPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -367,7 +563,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$ne
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$web3$40$4$2e$16$2e$0_bufferutil$40$4$2e$0$2e$9_typescript$40$5$2e$7$2e$3_utf$2d$8$2d$validate$40$5$2e$0$2e$10_zod$40$3$2e$24$2e$1$2f$node_modules$2f$web3$2f$lib$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_import__("[project]/node_modules/.pnpm/web3@4.16.0_bufferutil@4.0.9_typescript@5.7.3_utf-8-validate@5.0.10_zod@3.24.1/node_modules/web3/lib/esm/index.js [app-client] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/lib/web3Config.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useConnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/wagmi@2.14.7_@tanstack+query-core@5.64.0_@tanstack+react-query@5.64.0_react@19.0.0__@types+re_iogs5nkw2juifdsbjt5wwxuh5i/node_modules/wagmi/dist/esm/hooks/useConnect.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f40$wagmi$2b$core$40$2$2e$16$2e$3_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$types$2b$react$40$19$2e$0$2e$6_react$40$19$2e$0$2e$0_typescript$40$5$2e$_kfiku25gpkbyeq77f2embowl54$2f$node_modules$2f40$wagmi$2f$core$2f$dist$2f$esm$2f$connectors$2f$injected$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/@wagmi+core@2.16.3_@tanstack+query-core@5.64.0_@types+react@19.0.6_react@19.0.0_typescript@5._kfiku25gpkbyeq77f2embowl54/node_modules/@wagmi/core/dist/esm/connectors/injected.js [app-client] (ecmascript)"); // Changed this line
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f40$wagmi$2b$core$40$2$2e$16$2e$3_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$types$2b$react$40$19$2e$0$2e$6_react$40$19$2e$0$2e$0_typescript$40$5$2e$_kfiku25gpkbyeq77f2embowl54$2f$node_modules$2f40$wagmi$2f$core$2f$dist$2f$esm$2f$connectors$2f$injected$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/@wagmi+core@2.16.3_@tanstack+query-core@5.64.0_@types+react@19.0.6_react@19.0.0_typescript@5._kfiku25gpkbyeq77f2embowl54/node_modules/@wagmi/core/dist/esm/connectors/injected.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useDisconnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/wagmi@2.14.7_@tanstack+query-core@5.64.0_@tanstack+react-query@5.64.0_react@19.0.0__@types+re_iogs5nkw2juifdsbjt5wwxuh5i/node_modules/wagmi/dist/esm/hooks/useDisconnect.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/wagmi@2.14.7_@tanstack+query-core@5.64.0_@tanstack+react-query@5.64.0_react@19.0.0__@types+re_iogs5nkw2juifdsbjt5wwxuh5i/node_modules/wagmi/dist/esm/hooks/useAccount.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$web3$40$4$2e$16$2e$0_bufferutil$40$4$2e$0$2e$9_typescript$40$5$2e$7$2e$3_utf$2d$8$2d$validate$40$5$2e$0$2e$10_zod$40$3$2e$24$2e$1$2f$node_modules$2f$web3$2f$lib$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_import__("[project]/node_modules/.pnpm/web3@4.16.0_bufferutil@4.0.9_typescript@5.7.3_utf-8-validate@5.0.10_zod@3.24.1/node_modules/web3/lib/esm/index.js [app-client] (ecmascript) <locals>");
@@ -382,46 +578,50 @@ var _s = __turbopack_refresh__.signature(), _s1 = __turbopack_refresh__.signatur
 const Web3Context = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createContext"])(null);
 const Web3Provider = ({ children })=>{
     _s();
-    const { connect } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useConnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useConnect"])({
+    const [web3, setWeb3] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [contract, setContract] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const { connect: connectWagmi } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useConnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useConnect"])({
         connector: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f40$wagmi$2b$core$40$2$2e$16$2e$3_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$types$2b$react$40$19$2e$0$2e$6_react$40$19$2e$0$2e$0_typescript$40$5$2e$_kfiku25gpkbyeq77f2embowl54$2f$node_modules$2f40$wagmi$2f$core$2f$dist$2f$esm$2f$connectors$2f$injected$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["injected"])()
     });
-    const { disconnect } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useDisconnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDisconnect"])();
+    const { disconnect: disconnectWagmi } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useDisconnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDisconnect"])();
     const { address, isConnected } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
-    const [contract, setContract] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Web3Provider.useEffect": ()=>{
-            if (window.ethereum && address) {
-                const web3 = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$web3$40$4$2e$16$2e$0_bufferutil$40$4$2e$0$2e$9_typescript$40$5$2e$7$2e$3_utf$2d$8$2d$validate$40$5$2e$0$2e$10_zod$40$3$2e$24$2e$1$2f$node_modules$2f$web3$2f$lib$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"](window.ethereum);
-                const newContract = new web3.eth.Contract(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CONTRACT_ABI"], __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CONTRACT_ADDRESS"]);
-                setContract(newContract);
+            if (window.ethereum) {
+                const web3Instance = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$web3$40$4$2e$16$2e$0_bufferutil$40$4$2e$0$2e$9_typescript$40$5$2e$7$2e$3_utf$2d$8$2d$validate$40$5$2e$0$2e$10_zod$40$3$2e$24$2e$1$2f$node_modules$2f$web3$2f$lib$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"](window.ethereum);
+                setWeb3(web3Instance);
+                const contractInstance = new web3Instance.eth.Contract(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CONTRACT_ABI"], __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CONTRACT_ADDRESS"]);
+                setContract(contractInstance);
             }
         }
-    }["Web3Provider.useEffect"], [
-        address
-    ]);
-    const handleConnect = async ()=>{
+    }["Web3Provider.useEffect"], []);
+    const connect = async ()=>{
         try {
-            await connect();
+            await connectWagmi();
         } catch (error) {
-            console.error('Error connecting:', error);
+            console.error('Connection error:', error);
         }
+    };
+    const disconnect = ()=>{
+        disconnectWagmi();
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Web3Context.Provider, {
         value: {
-            connect: handleConnect,
+            connect,
             disconnect,
             contract,
             account: address || null,
-            isActive: isConnected
+            isActive: isConnected,
+            web3
         },
         children: children
     }, void 0, false, {
         fileName: "[project]/src/contexts/web3Context.tsx",
-        lineNumber: 45,
+        lineNumber: 57,
         columnNumber: 5
     }, this);
 };
-_s(Web3Provider, "cqywc0lmLBDH34Avm1Qgt9RUOhg=", false, function() {
+_s(Web3Provider, "nwHXF966NUMRaQr1ww9a1zVFXaE=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useConnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useConnect"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useDisconnect$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDisconnect"],

@@ -1,0 +1,638 @@
+{
+  "contractName": "ProductStructs",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/ProductStructs.sol\":\"ProductStructs\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"details\":{\"constantOptimizer\":true,\"cse\":true,\"deduplicate\":true,\"jumpdestRemover\":true,\"orderLiterals\":true,\"peephole\":true,\"yul\":false},\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/ProductStructs.sol\":{\"keccak256\":\"0xac7ee546c78c4d7e9e4b74d0959cf909f202b8868367017f2a538af1855f88f3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7695665535115e6b23f0f758f75658411d929dae14873569573a62d51ce58276\",\"dweb:/ipfs/QmQCDhCwjj7VY76rpdT4QtuF1kbns4YCN2o7JEjKTDJpHK\"]}},\"version\":1}",
+  "bytecode": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212206e328310c9829b38b8c024c030f875eab6e568f227f04220d994949173c332f364736f6c63430008000033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212206e328310c9829b38b8c024c030f875eab6e568f227f04220d994949173c332f364736f6c63430008000033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "60:689:2:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;60:689:2;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "60:689:2:-:0;;;;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\nlibrary ProductStructs {\r\n    struct ProductDetails {\r\n        string name;\r\n        uint256 basePrice;\r\n        bool isValid;\r\n        bool isPaid;\r\n    }\r\n\r\n    struct ProductActors {\r\n        address farmer;\r\n        address collector;\r\n        address transporter;\r\n        address distributor;\r\n        address retailer;\r\n        address consumer;\r\n    }\r\n\r\n    struct ProductFees {\r\n        uint256 collectorFee;\r\n        uint256 transporterFee;\r\n        uint256 distributorFee;\r\n        uint256 retailerFee;\r\n    }\r\n\r\n    struct Product {\r\n        uint256 id;\r\n        ProductDetails details;\r\n        ProductActors actors;\r\n        ProductFees fees;\r\n        uint8 state;\r\n    }\r\n}",
+  "sourcePath": "C:\\Users\\Dell\\OneDrive\\Desktop\\agriculture-supply-chain\\contracts\\ProductStructs.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/ProductStructs.sol",
+    "exportedSymbols": {
+      "ProductStructs": [
+        1177
+      ]
+    },
+    "id": 1178,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1131,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:2"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "fullyImplemented": true,
+        "id": 1177,
+        "linearizedBaseContracts": [
+          1177
+        ],
+        "name": "ProductStructs",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "ProductStructs.ProductDetails",
+            "id": 1140,
+            "members": [
+              {
+                "constant": false,
+                "id": 1133,
+                "mutability": "mutable",
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 1140,
+                "src": "123:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 1132,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "123:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1135,
+                "mutability": "mutable",
+                "name": "basePrice",
+                "nodeType": "VariableDeclaration",
+                "scope": 1140,
+                "src": "145:17:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1134,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "145:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1137,
+                "mutability": "mutable",
+                "name": "isValid",
+                "nodeType": "VariableDeclaration",
+                "scope": 1140,
+                "src": "173:12:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1136,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "173:4:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1139,
+                "mutability": "mutable",
+                "name": "isPaid",
+                "nodeType": "VariableDeclaration",
+                "scope": 1140,
+                "src": "196:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1138,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "196:4:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "ProductDetails",
+            "nodeType": "StructDefinition",
+            "scope": 1177,
+            "src": "90:125:2",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "ProductStructs.ProductActors",
+            "id": 1153,
+            "members": [
+              {
+                "constant": false,
+                "id": 1142,
+                "mutability": "mutable",
+                "name": "farmer",
+                "nodeType": "VariableDeclaration",
+                "scope": 1153,
+                "src": "255:14:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 1141,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "255:7:2",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1144,
+                "mutability": "mutable",
+                "name": "collector",
+                "nodeType": "VariableDeclaration",
+                "scope": 1153,
+                "src": "280:17:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 1143,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "280:7:2",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1146,
+                "mutability": "mutable",
+                "name": "transporter",
+                "nodeType": "VariableDeclaration",
+                "scope": 1153,
+                "src": "308:19:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 1145,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "308:7:2",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1148,
+                "mutability": "mutable",
+                "name": "distributor",
+                "nodeType": "VariableDeclaration",
+                "scope": 1153,
+                "src": "338:19:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 1147,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "338:7:2",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1150,
+                "mutability": "mutable",
+                "name": "retailer",
+                "nodeType": "VariableDeclaration",
+                "scope": 1153,
+                "src": "368:16:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 1149,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "368:7:2",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1152,
+                "mutability": "mutable",
+                "name": "consumer",
+                "nodeType": "VariableDeclaration",
+                "scope": 1153,
+                "src": "395:16:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 1151,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "395:7:2",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "ProductActors",
+            "nodeType": "StructDefinition",
+            "scope": 1177,
+            "src": "223:196:2",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "ProductStructs.ProductFees",
+            "id": 1162,
+            "members": [
+              {
+                "constant": false,
+                "id": 1155,
+                "mutability": "mutable",
+                "name": "collectorFee",
+                "nodeType": "VariableDeclaration",
+                "scope": 1162,
+                "src": "457:20:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1154,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "457:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1157,
+                "mutability": "mutable",
+                "name": "transporterFee",
+                "nodeType": "VariableDeclaration",
+                "scope": 1162,
+                "src": "488:22:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1156,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "488:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1159,
+                "mutability": "mutable",
+                "name": "distributorFee",
+                "nodeType": "VariableDeclaration",
+                "scope": 1162,
+                "src": "521:22:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1158,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "521:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1161,
+                "mutability": "mutable",
+                "name": "retailerFee",
+                "nodeType": "VariableDeclaration",
+                "scope": 1162,
+                "src": "554:19:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1160,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "554:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "ProductFees",
+            "nodeType": "StructDefinition",
+            "scope": 1177,
+            "src": "427:154:2",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "ProductStructs.Product",
+            "id": 1176,
+            "members": [
+              {
+                "constant": false,
+                "id": 1164,
+                "mutability": "mutable",
+                "name": "id",
+                "nodeType": "VariableDeclaration",
+                "scope": 1176,
+                "src": "615:10:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1163,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "615:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1167,
+                "mutability": "mutable",
+                "name": "details",
+                "nodeType": "VariableDeclaration",
+                "scope": 1176,
+                "src": "636:22:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_ProductDetails_$1140_storage_ptr",
+                  "typeString": "struct ProductStructs.ProductDetails"
+                },
+                "typeName": {
+                  "id": 1166,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 1165,
+                    "name": "ProductDetails",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 1140,
+                    "src": "636:14:2"
+                  },
+                  "referencedDeclaration": 1140,
+                  "src": "636:14:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_ProductDetails_$1140_storage_ptr",
+                    "typeString": "struct ProductStructs.ProductDetails"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1170,
+                "mutability": "mutable",
+                "name": "actors",
+                "nodeType": "VariableDeclaration",
+                "scope": 1176,
+                "src": "669:20:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_ProductActors_$1153_storage_ptr",
+                  "typeString": "struct ProductStructs.ProductActors"
+                },
+                "typeName": {
+                  "id": 1169,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 1168,
+                    "name": "ProductActors",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 1153,
+                    "src": "669:13:2"
+                  },
+                  "referencedDeclaration": 1153,
+                  "src": "669:13:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_ProductActors_$1153_storage_ptr",
+                    "typeString": "struct ProductStructs.ProductActors"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1173,
+                "mutability": "mutable",
+                "name": "fees",
+                "nodeType": "VariableDeclaration",
+                "scope": 1176,
+                "src": "700:16:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_ProductFees_$1162_storage_ptr",
+                  "typeString": "struct ProductStructs.ProductFees"
+                },
+                "typeName": {
+                  "id": 1172,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 1171,
+                    "name": "ProductFees",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 1162,
+                    "src": "700:11:2"
+                  },
+                  "referencedDeclaration": 1162,
+                  "src": "700:11:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_ProductFees_$1162_storage_ptr",
+                    "typeString": "struct ProductStructs.ProductFees"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1175,
+                "mutability": "mutable",
+                "name": "state",
+                "nodeType": "VariableDeclaration",
+                "scope": 1176,
+                "src": "727:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint8",
+                  "typeString": "uint8"
+                },
+                "typeName": {
+                  "id": 1174,
+                  "name": "uint8",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "727:5:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Product",
+            "nodeType": "StructDefinition",
+            "scope": 1177,
+            "src": "589:157:2",
+            "visibility": "public"
+          }
+        ],
+        "scope": 1178,
+        "src": "60:689:2"
+      }
+    ],
+    "src": "33:716:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.0+commit.c7dfd78e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2025-01-18T05:16:10.025Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

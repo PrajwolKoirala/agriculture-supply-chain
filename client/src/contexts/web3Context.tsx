@@ -3,7 +3,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
-import { injected } from 'wagmi/connectors' // Changed this line
+import { injected } from 'wagmi/connectors'
 import Web3 from 'web3'
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '@/lib/web3Config'
 
@@ -13,42 +13,55 @@ interface Web3ContextType {
   contract: any | null
   account: string | null
   isActive: boolean
+  web3: Web3 | null
 }
 
 const Web3Context = createContext<Web3ContextType | null>(null)
 
 export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
-  const { connect } = useConnect({
-    connector: injected(), // Changed this line
+  const [web3, setWeb3] = useState<Web3 | null>(null)
+  const [contract, setContract] = useState<any>(null)
+  
+  const { connect: connectWagmi } = useConnect({
+    connector: injected()
   })
-  const { disconnect } = useDisconnect()
+  const { disconnect: disconnectWagmi } = useDisconnect()
   const { address, isConnected } = useAccount()
-  const [contract, setContract] = useState<any | null>(null)
 
   useEffect(() => {
-    if (window.ethereum && address) {
-      const web3 = new Web3(window.ethereum)
-      const newContract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS)
-      setContract(newContract)
+    if (window.ethereum) {
+      const web3Instance = new Web3(window.ethereum)
+      setWeb3(web3Instance)
+      
+      const contractInstance = new web3Instance.eth.Contract(
+        CONTRACT_ABI,
+        CONTRACT_ADDRESS
+      )
+      setContract(contractInstance)
     }
-  }, [address])
+  }, [])
 
-  const handleConnect = async () => {
+  const connect = async () => {
     try {
-      await connect()
+      await connectWagmi()
     } catch (error) {
-      console.error('Error connecting:', error)
+      console.error('Connection error:', error)
     }
+  }
+
+  const disconnect = () => {
+    disconnectWagmi()
   }
 
   return (
     <Web3Context.Provider
       value={{
-        connect: handleConnect,
+        connect,
         disconnect,
         contract,
         account: address || null,
         isActive: isConnected,
+        web3
       }}
     >
       {children}

@@ -1,7 +1,5 @@
 // src/lib/web3Config.ts
-import { createConfig, configureChains } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
-import { createPublicClient, http } from 'viem'
+
 import Web3 from 'web3'
 // import AgriSupplyChain from '../../../build/contracts/AgriSupplyChain.json';
 
@@ -18,14 +16,64 @@ export const getWeb3 = () => {
 //   const networkId = "5777"; // Update based on the current network ID
 //   return AgriSupplyChain.networks[networkId]?.address || null;
 // };
-export const CONTRACT_ADDRESS = "0x92307E92917Af5C05771918f6534161811B8CcC3"; // Replace after deployment
+export const CONTRACT_ADDRESS = "0x128E40aB77b48901CCB16E0Cc6905E4efB6987a5"; // Replace after deployment
 
 // export const CONTRACT_ADDRESS = getContractAddress();
-export const CONTRACT_ABI =[
+export const CONTRACT_ABI = [
   {
     "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "productId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "entity",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "FeeAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PaymentProcessed",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -69,7 +117,7 @@ export const CONTRACT_ABI =[
       },
       {
         "indexed": false,
-        "internalType": "enum AgriSupplyChain.ProductState",
+        "internalType": "uint8",
         "name": "newState",
         "type": "uint8"
       }
@@ -107,54 +155,100 @@ export const CONTRACT_ABI =[
         "type": "uint256"
       },
       {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "basePrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isValid",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPaid",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct ProductStructs.ProductDetails",
+        "name": "details",
+        "type": "tuple"
       },
       {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "farmer",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collector",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "transporter",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "distributor",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "retailer",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "consumer",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct ProductStructs.ProductActors",
+        "name": "actors",
+        "type": "tuple"
       },
       {
-        "internalType": "address",
-        "name": "farmer",
-        "type": "address"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "collectorFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "transporterFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "distributorFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "retailerFee",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ProductStructs.ProductFees",
+        "name": "fees",
+        "type": "tuple"
       },
       {
-        "internalType": "address",
-        "name": "collector",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "transporter",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "distributor",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "retailer",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "consumer",
-        "type": "address"
-      },
-      {
-        "internalType": "enum AgriSupplyChain.ProductState",
+        "internalType": "uint8",
         "name": "state",
         "type": "uint8"
-      },
-      {
-        "internalType": "bool",
-        "name": "isValid",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -208,7 +302,7 @@ export const CONTRACT_ABI =[
       },
       {
         "internalType": "uint256",
-        "name": "_price",
+        "name": "_basePrice",
         "type": "uint256"
       }
     ],
@@ -223,38 +317,56 @@ export const CONTRACT_ABI =[
         "internalType": "uint256",
         "name": "_productId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collectorFee",
+        "type": "uint256"
       }
     ],
     "name": "collectProduct",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "_productId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_transporterFee",
         "type": "uint256"
       }
     ],
     "name": "transportProduct",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "_productId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_distributorFee",
         "type": "uint256"
       }
     ],
     "name": "distributeProduct",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
   },
   {
     "inputs": [
@@ -262,12 +374,18 @@ export const CONTRACT_ABI =[
         "internalType": "uint256",
         "name": "_productId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_retailerFee",
+        "type": "uint256"
       }
     ],
     "name": "sendToRetailer",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
   },
   {
     "inputs": [
@@ -279,8 +397,9 @@ export const CONTRACT_ABI =[
     ],
     "name": "purchaseProduct",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
   },
   {
     "inputs": [
@@ -290,7 +409,7 @@ export const CONTRACT_ABI =[
         "type": "uint256"
       }
     ],
-    "name": "getProduct",
+    "name": "getProductBasicInfo",
     "outputs": [
       {
         "internalType": "uint256",
@@ -304,9 +423,69 @@ export const CONTRACT_ABI =[
       },
       {
         "internalType": "uint256",
-        "name": "price",
+        "name": "basePrice",
         "type": "uint256"
       },
+      {
+        "internalType": "uint8",
+        "name": "state",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bool",
+        "name": "isValid",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_productId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getProductFees",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "collectorFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "transporterFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "distributorFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "retailerFee",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_productId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getProductActors",
+    "outputs": [
       {
         "internalType": "address",
         "name": "farmer",
@@ -336,11 +515,26 @@ export const CONTRACT_ABI =[
         "internalType": "address",
         "name": "consumer",
         "type": "address"
-      },
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
       {
-        "internalType": "enum AgriSupplyChain.ProductState",
-        "name": "state",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "_productId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTotalPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

@@ -1042,14 +1042,16 @@ const ProductList = ({ products, onSelect, selectedId, stateLabel }) => {
         <Card
           key={product.id}
           className={`cursor-pointer transition-all ${
-            selectedId === product.id ? "ring-2 ring-primary" : ""
-          }`}
+            selectedId === product.id ? "ring-2 ring-green-500" : ""
+          } hover:shadow-lg transform hover:scale-105`}
           onClick={() => onSelect(product.id)}
         >
           <CardContent className="p-4">
             <div className="flex justify-between items-start mb-2">
-              <h3 className="font-semibold">{product.name}</h3>
-              <Badge className="bg-blue-100 text-blue-800">{stateLabel}</Badge>
+              <h3 className="font-semibold text-gray-700">{product.name}</h3>
+              <Badge className="bg-gradient-to-r from-green-100 to-blue-100 text-green-800">
+                {stateLabel}
+              </Badge>
             </div>
             <p className="text-sm text-gray-500">ID: {product.id}</p>
             {product.basePrice && (
@@ -1159,14 +1161,14 @@ const FarmerDashboard = ({ contract, account }) => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Wheat className="w-5 h-5" />
+      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
+        <CardHeader className="flex items-center gap-2 p-6">
+          <Wheat className="w-6 h-6 text-green-600" />
+          <CardTitle className="text-xl font-semibold text-gray-700">
             Create New Product
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="p-6 space-y-4">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -1176,16 +1178,18 @@ const FarmerDashboard = ({ contract, account }) => {
             placeholder="Product Name"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
+            className="bg-gray-50 border border-gray-200 rounded-md p-2"
           />
           <Input
             placeholder="Base Price (ETH)"
             type="number"
             value={basePrice}
             onChange={(e) => setBasePrice(e.target.value)}
+            className="bg-gray-50 border border-gray-200 rounded-md p-2"
           />
           <Button
             onClick={createProduct}
-            className="w-full"
+            className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
             disabled={!productName || !basePrice}
           >
             Create Product
@@ -1193,11 +1197,13 @@ const FarmerDashboard = ({ contract, account }) => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>My Products</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
+        <CardHeader className="p-6">
+          <CardTitle className="text-xl font-semibold text-gray-700">
+            My Products
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {products.length === 0 ? (
               <p className="text-gray-500 col-span-2 text-center py-4">
@@ -1280,14 +1286,17 @@ const CollectorDashboard = ({ contract, account }) => {
       setError(error.message);
     }
   };
-
+  //cards for available prducts
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Available Products for Collection</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
+        <CardHeader className="flex items-center gap-2 p-6">
+          <Box className="w-6 h-6 text-green-600" />
+          <CardTitle className="text-xl font-semibold text-gray-700">
+            Available Products for Collection
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="p-6 space-y-4">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -1308,10 +1317,11 @@ const CollectorDashboard = ({ contract, account }) => {
                 type="number"
                 value={collectorFee}
                 onChange={(e) => setCollectorFee(e.target.value)}
+                className="bg-gray-50 border border-gray-200 rounded-md p-2"
               />
               <Button
                 onClick={collectProduct}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
                 disabled={!collectorFee}
               >
                 Collect and Pay
@@ -1393,11 +1403,14 @@ const TransporterDashboard = ({ contract, account }) => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Products Ready for Transport</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
+        <CardHeader className="flex items-center gap-2 p-6">
+          <Truck className="w-6 h-6 text-green-600" />
+          <CardTitle className="text-xl font-semibold text-gray-700">
+            Products Ready for Transport
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="p-6 space-y-4">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -1418,10 +1431,11 @@ const TransporterDashboard = ({ contract, account }) => {
                 type="number"
                 value={transporterFee}
                 onChange={(e) => setTransporterFee(e.target.value)}
+                className="bg-gray-50 border border-gray-200 rounded-md p-2"
               />
               <Button
                 onClick={transportProduct}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
                 disabled={!transporterFee}
               >
                 Transport and Pay
@@ -1507,11 +1521,14 @@ const DistributorDashboard = ({ contract, account }) => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Products Ready for Distribution</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
+        <CardHeader className="flex items-center gap-2 p-6">
+          <Store className="w-6 h-6 text-green-600" />
+          <CardTitle className="text-xl font-semibold text-gray-700">
+            Products Ready for Distribution
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="p-6 space-y-4">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -1532,10 +1549,11 @@ const DistributorDashboard = ({ contract, account }) => {
                 type="number"
                 value={distributorFee}
                 onChange={(e) => setDistributorFee(e.target.value)}
+                className="bg-gray-50 border border-gray-200 rounded-md p-2"
               />
               <Button
                 onClick={distributeProduct}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
                 disabled={!distributorFee}
               >
                 Distribute and Pay
@@ -1621,11 +1639,14 @@ const RetailerDashboard = ({ contract, account }) => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Products Available for Retail</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
+        <CardHeader className="flex items-center gap-2 p-6">
+          <ShoppingBag className="w-6 h-6 text-green-600" />
+          <CardTitle className="text-xl font-semibold text-gray-700">
+            Products Available for Retail
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="p-6 space-y-4">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -1646,10 +1667,11 @@ const RetailerDashboard = ({ contract, account }) => {
                 type="number"
                 value={retailerFee}
                 onChange={(e) => setRetailerFee(e.target.value)}
+                className="bg-gray-50 border border-gray-200 rounded-md p-2"
               />
               <Button
                 onClick={sendToRetail}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
                 disabled={!retailerFee}
               >
                 Accept and Pay
@@ -1690,19 +1712,22 @@ const TransactionHistory = ({ contract, account }) => {
   }, [contract]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <History className="w-5 h-5" />
-          Transaction History
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
+    <div className="space-y-6">
+      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
+        <CardHeader className="flex items-center gap-2 p-6">
+          <History className="w-6 h-6 text-green-600" />
+          <CardTitle className="text-xl font-semibold text-gray-700">
+            Transaction History
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 space-y-4">
           {transactions.map((tx, index) => (
-            <Card key={index}>
+            <Card
+              key={index}
+              className="bg-gray-50 border border-gray-100 rounded-lg shadow-sm"
+            >
               <CardContent className="p-4">
-                <p className="font-semibold">
+                <p className="font-semibold text-gray-700">
                   Product ID: {tx.returnValues.productId}
                 </p>
                 <p className="text-sm text-gray-500">
@@ -1714,9 +1739,9 @@ const TransactionHistory = ({ contract, account }) => {
               </CardContent>
             </Card>
           ))}
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
@@ -1903,11 +1928,6 @@ export default function Home() {
                 onClick={handleConnection}
                 className="w-full h-12 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-3"
               >
-                <img
-                  src="/metamask-fox.svg"
-                  alt="MetaMask"
-                  className="w-6 h-6"
-                />
                 Connect with MetaMask
               </Button>
             </div>
@@ -1936,15 +1956,17 @@ export default function Home() {
       </div>
     );
   }
-
+  // top bar
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
+      <nav className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 shadow-md">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <Wheat className="w-6 h-6" />
-              <h1 className="text-xl font-bold">AgriSupplyChain</h1>
+              <Wheat className="w-6 h-6 text-green-600" />
+              <h1 className="text-xl font-bold text-gray-700">
+                AgriSupplyChain
+              </h1>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-green-50 to-blue-50 rounded-full border border-green-100">

@@ -3,5 +3,7 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/farmer/page": "app/farmer/page.js",
-  "/collector/page": "app/collector/page.js"
+  "/collector/page": "app/collector/page.js",
+  "/transaction-history/page": "app/transaction-history/page.js",
+  "/registration/page": "app/registration/page.js"
 }

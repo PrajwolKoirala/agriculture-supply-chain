@@ -16,7 +16,7 @@
     "static/chunks/9f712_web3-eth_lib_esm_c65e79._.js",
     "static/chunks/8367d_web3-eth-abi_lib_esm_72bd4e._.js",
     "static/chunks/aa695_web3-eth-contract_lib_esm_c65dd8._.js",
-    "static/chunks/e3fdf_@wagmi_core_dist_esm_d4458b._.js",
+    "static/chunks/e3fdf_@wagmi_core_dist_esm_5f8619._.js",
     "static/chunks/3b1ba_viem__esm_7ddce6._.js",
     "static/chunks/node_modules__pnpm_b71932._.js",
     "static/chunks/src_c8a1d7._.js"

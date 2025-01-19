@@ -2,13 +2,19 @@
 pragma solidity ^0.8.0;
 
 library ProductStructs {
+ struct Location {
+        string district;
+        string localBody;
+        uint256 distance;
+    }
+
     struct ProductDetails {
         string name;
         uint256 basePrice;
         bool isValid;
         bool isPaid;
+        Location location;
     }
-
     struct ProductActors {
         address farmer;
         address collector;

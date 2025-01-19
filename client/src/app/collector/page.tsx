@@ -8,7 +8,7 @@ import { Box } from "lucide-react"; // Import Box from lucide-react
 import { Contract } from "web3-eth-contract";
 
 interface CollectorDashboardProps {
-  contract: Contract;
+  contract: Contract<any>;
   account: string;
 }
 

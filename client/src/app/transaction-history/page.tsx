@@ -46,7 +46,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
 
       // Get transaction details for each event
       const historyWithDetails = await Promise.all(
-        events.map(async (event) => {
+        events.map(async (event: any) => {
           const tx = await web3.eth.getTransaction(event.transactionHash);
           const receipt = await web3.eth.getTransactionReceipt(
             event.transactionHash

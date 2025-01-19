@@ -16,7 +16,7 @@ export const getWeb3 = () => {
 //   const networkId = "5777"; // Update based on the current network ID
 //   return AgriSupplyChain.networks[networkId]?.address || null;
 // };
-export const CONTRACT_ADDRESS = "0x128E40aB77b48901CCB16E0Cc6905E4efB6987a5"; // Replace after deployment
+export const CONTRACT_ADDRESS = "0xe2286B653546d83DbF9Fe64F00680BED5658f95A"; // Replace after deployment
 
 // export const CONTRACT_ADDRESS = getContractAddress();
 export const CONTRACT_ABI = [
@@ -126,12 +126,107 @@ export const CONTRACT_ABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "productId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "fromState",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "toState",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "by",
+        "type": "address"
+      }
+    ],
+    "name": "TransactionReverted",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "ADMIN",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
     "inputs": [],
     "name": "productCount",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "productPayments",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "fromState",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "toState",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
         "type": "uint256"
       }
     ],
@@ -175,6 +270,28 @@ export const CONTRACT_ABI = [
             "internalType": "bool",
             "name": "isPaid",
             "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "district",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "localBody",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "distance",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ProductStructs.Location",
+            "name": "location",
+            "type": "tuple"
           }
         ],
         "internalType": "struct ProductStructs.ProductDetails",
@@ -278,6 +395,19 @@ export const CONTRACT_ABI = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_productId",
+        "type": "uint256"
+      }
+    ],
+    "name": "revertTransaction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_user",
         "type": "address"
@@ -321,6 +451,21 @@ export const CONTRACT_ABI = [
       {
         "internalType": "uint256",
         "name": "_collectorFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_district",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_localBody",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_distance",
         "type": "uint256"
       }
     ],
@@ -409,6 +554,51 @@ export const CONTRACT_ABI = [
         "type": "uint256"
       }
     ],
+    "name": "getProductTransactions",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "from",
+        "type": "address[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "to",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "fromStates",
+        "type": "uint8[]"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "toStates",
+        "type": "uint8[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "timestamps",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_productId",
+        "type": "uint256"
+      }
+    ],
     "name": "getProductBasicInfo",
     "outputs": [
       {
@@ -435,6 +625,21 @@ export const CONTRACT_ABI = [
         "internalType": "bool",
         "name": "isValid",
         "type": "bool"
+      },
+      {
+        "internalType": "string",
+        "name": "district",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "localBody",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "distance",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

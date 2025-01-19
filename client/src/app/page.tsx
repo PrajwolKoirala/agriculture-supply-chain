@@ -983,7 +983,7 @@
 // }
 
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, JSX } from "react";
 import { useWeb3 } from "@/contexts/web3Context";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -1000,10 +1000,92 @@ import {
   Store,
   ShoppingBag,
   LogOut,
+  Package,
+  Check,
+  ChevronsUpDown,
 } from "lucide-react";
 import UserRegistration from "./registration/page";
+import AdminDashboard from "./admin/page";
+import { districtsData, localBodiesData } from "@/lib/LocationData";
+import { Select } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import {
+  DashboardProps,
+  Product,
+  ProductCardProps,
+  ProductListProps,
+  SearchableSelectProps,
+} from "@/lib/type";
+import { GoogleMap } from "@/lib/map";
 
-const ProductCard = ({ product }) => {
+const SearchableSelect: React.FC<SearchableSelectProps> = ({
+  items,
+  value,
+  onChange,
+  placeholder,
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between"
+        >
+          {value
+            ? items.find((item) => item.id === Number(value))?.name
+            : placeholder}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full p-0">
+        <Command>
+          <CommandInput
+            placeholder={`Search ${placeholder.toLowerCase()}...`}
+          />
+          <CommandEmpty>No {placeholder.toLowerCase()} found.</CommandEmpty>
+          <CommandGroup className="max-h-60 overflow-auto">
+            {items.map((item) => (
+              <CommandItem
+                key={item.id}
+                value={item.name}
+                onSelect={() => {
+                  onChange(item.id.toString());
+                  setOpen(false);
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    value === item.id.toString() ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {item.name}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const stateColors = {
     Created: "bg-blue-100 text-blue-800",
     CollectedByCollector: "bg-purple-100 text-purple-800",
@@ -1027,7 +1109,12 @@ const ProductCard = ({ product }) => {
   );
 };
 
-const ProductList = ({ products, onSelect, selectedId, stateLabel }) => {
+const ProductList: React.FC<ProductListProps> = ({
+  products,
+  onSelect,
+  selectedId,
+  stateLabel,
+}) => {
   if (!products.length) {
     return (
       <div className="text-center p-4 bg-gray-50 rounded-md">
@@ -1081,8 +1168,8 @@ const ProductList = ({ products, onSelect, selectedId, stateLabel }) => {
   );
 };
 
-const FarmerDashboard = ({ contract, account }) => {
-  const [products, setProducts] = useState([]);
+const FarmerDashboard: React.FC<DashboardProps> = ({ contract, account }) => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [productName, setProductName] = useState("");
   const [basePrice, setBasePrice] = useState("");
   const [error, setError] = useState("");
@@ -1101,9 +1188,7 @@ const FarmerDashboard = ({ contract, account }) => {
       setProductName("");
       setBasePrice("");
       await fetchProducts();
-    } catch (error) {
-      setError(error.message);
-    }
+    } catch (error) {}
   };
 
   const fetchProducts = async () => {
@@ -1221,13 +1306,134 @@ const FarmerDashboard = ({ contract, account }) => {
   );
 };
 
-const CollectorDashboard = ({ contract, account }) => {
-  const [availableProducts, setAvailableProducts] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState(null);
+// const CollectorDashboard = ({ contract, account }) => {
+//   const [availableProducts, setAvailableProducts] = useState([]);
+//   const [selectedProductId, setSelectedProductId] = useState(null);
+//   const [collectorFee, setCollectorFee] = useState("");
+//   const [error, setError] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const { web3 } = useWeb3();
+
+//   const fetchAvailableProducts = async () => {
+//     try {
+//       setLoading(true);
+//       const count = await contract.methods.productCount().call();
+//       const products = [];
+
+//       for (let i = 1; i <= count; i++) {
+//         const productInfo = await contract.methods
+//           .getProductBasicInfo(i)
+//           .call();
+//         if (productInfo.isValid && Number(productInfo.state) === 0) {
+//           products.push({
+//             id: productInfo.id,
+//             name: productInfo.name,
+//             basePrice: web3.utils.fromWei(productInfo.basePrice, "ether"),
+//             state: productInfo.state,
+//           });
+//         }
+//       }
+
+//       setAvailableProducts(products);
+//     } catch (error) {
+//       console.error("Error fetching products:", error);
+//       setError("Failed to fetch available products");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (contract && account) {
+//       fetchAvailableProducts();
+//     }
+//   }, [contract, account]);
+
+//   const collectProduct = async () => {
+//     try {
+//       if (!selectedProductId) {
+//         setError("Please select a product first");
+//         return;
+//       }
+
+//       const product = availableProducts.find((p) => p.id === selectedProductId);
+//       const collectorFeeWei = web3.utils.toWei(collectorFee, "ether");
+//       const basePriceWei = web3.utils.toWei(product.basePrice, "ether");
+
+//       await contract.methods
+//         .collectProduct(selectedProductId, collectorFeeWei)
+//         .send({ from: account, value: basePriceWei });
+
+//       setCollectorFee("");
+//       setSelectedProductId(null);
+//       await fetchAvailableProducts();
+//     } catch (error) {
+//       setError(error.message);
+//     }
+//   };
+
+//   return (
+//     <div className="space-y-6">
+//       <Card>
+//         <CardHeader>
+//           <CardTitle>Available Products for Collection</CardTitle>
+//         </CardHeader>
+//         <CardContent className="space-y-4">
+//           {error && (
+//             <Alert variant="destructive">
+//               <AlertDescription>{error}</AlertDescription>
+//             </Alert>
+//           )}
+
+//           <ProductList
+//             products={availableProducts}
+//             onSelect={setSelectedProductId}
+//             selectedId={selectedProductId}
+//             stateLabel="Available"
+//           />
+
+//           {selectedProductId && (
+//             <>
+//               <Input
+//                 placeholder="Your Collection Fee (ETH)"
+//                 type="number"
+//                 value={collectorFee}
+//                 onChange={(e) => setCollectorFee(e.target.value)}
+//               />
+//               <Button
+//                 onClick={collectProduct}
+//                 className="w-full"
+//                 disabled={!collectorFee}
+//               >
+//                 Collect and Pay
+//               </Button>
+//             </>
+//           )}
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+// };
+
+const CollectorDashboard: React.FC<DashboardProps> = ({
+  contract,
+  account,
+}) => {
+  const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
   const [collectorFee, setCollectorFee] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedLocalBody, setSelectedLocalBody] = useState("");
+  const [distance, setDistance] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { web3 } = useWeb3();
+
+  const filteredLocalBodies = localBodiesData.filter(
+    (body) => body.districtId === Number(selectedDistrict)
+  );
 
   const fetchAvailableProducts = async () => {
     try {
@@ -1243,7 +1449,9 @@ const CollectorDashboard = ({ contract, account }) => {
           products.push({
             id: productInfo.id,
             name: productInfo.name,
-            basePrice: web3.utils.fromWei(productInfo.basePrice, "ether"),
+            basePrice: web3
+              ? web3.utils.fromWei(productInfo.basePrice, "ether")
+              : "0",
             state: productInfo.state,
           });
         }
@@ -1271,19 +1479,41 @@ const CollectorDashboard = ({ contract, account }) => {
         return;
       }
 
+      if (!selectedDistrict || !selectedLocalBody || !distance) {
+        setError("Please fill in all location details");
+        return;
+      }
+
       const product = availableProducts.find((p) => p.id === selectedProductId);
+      if (!web3 || !product) {
+        setError("Web3 or product not initialized");
+        return;
+      }
       const collectorFeeWei = web3.utils.toWei(collectorFee, "ether");
-      const basePriceWei = web3.utils.toWei(product.basePrice, "ether");
+      const basePriceWei = web3.utils.toWei(product.basePrice || "0", "ether");
 
       await contract.methods
-        .collectProduct(selectedProductId, collectorFeeWei)
+        .collectProduct(
+          selectedProductId,
+          collectorFeeWei,
+          selectedDistrict,
+          selectedLocalBody,
+          distance
+        )
         .send({ from: account, value: basePriceWei });
 
       setCollectorFee("");
       setSelectedProductId(null);
+      setSelectedDistrict("");
+      setSelectedLocalBody("");
+      setDistance("");
       await fetchAvailableProducts();
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
     }
   };
   //cards for available prducts
@@ -1305,13 +1535,46 @@ const CollectorDashboard = ({ contract, account }) => {
 
           <ProductList
             products={availableProducts}
-            onSelect={setSelectedProductId}
+            onSelect={(id) => setSelectedProductId(id)}
             selectedId={selectedProductId}
             stateLabel="Available"
           />
 
           {selectedProductId && (
             <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">District</label>
+                  <SearchableSelect
+                    items={districtsData}
+                    value={selectedDistrict}
+                    onChange={(value) => {
+                      setSelectedDistrict(value);
+                      setSelectedLocalBody("");
+                    }}
+                    placeholder="Select District"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Local Body</label>
+                  <SearchableSelect
+                    items={filteredLocalBodies}
+                    value={selectedLocalBody}
+                    onChange={setSelectedLocalBody}
+                    placeholder="Select Local Body"
+                  />
+                </div>
+              </div>
+
+              <Input
+                placeholder="Distance (km)"
+                type="number"
+                value={distance}
+                onChange={(e) => setDistance(e.target.value)}
+                className="mt-4"
+              />
+
               <Input
                 placeholder="Your Collection Fee (ETH)"
                 type="number"
@@ -1319,10 +1582,16 @@ const CollectorDashboard = ({ contract, account }) => {
                 onChange={(e) => setCollectorFee(e.target.value)}
                 className="bg-gray-50 border border-gray-200 rounded-md p-2"
               />
+
               <Button
                 onClick={collectProduct}
-                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
-                disabled={!collectorFee}
+                className="w-full"
+                disabled={
+                  !collectorFee ||
+                  !selectedDistrict ||
+                  !selectedLocalBody ||
+                  !distance
+                }
               >
                 Collect and Pay
               </Button>
@@ -1330,14 +1599,132 @@ const CollectorDashboard = ({ contract, account }) => {
           )}
         </CardContent>
       </Card>
+
+      <div className="w-full h-96 rounded-lg overflow-hidden">
+        <GoogleMap />
+      </div>
     </div>
   );
 };
 
-const TransporterDashboard = ({ contract, account }) => {
-  const [availableProducts, setAvailableProducts] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState(null);
-  const [transporterFee, setTransporterFee] = useState("");
+// const TransporterDashboard = ({ contract, account }) => {
+//   const [availableProducts, setAvailableProducts] = useState([]);
+//   const [selectedProductId, setSelectedProductId] = useState(null);
+//   const [transporterFee, setTransporterFee] = useState("");
+//   const [error, setError] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const { web3 } = useWeb3();
+
+//   const fetchAvailableProducts = async () => {
+//     try {
+//       setLoading(true);
+//       const count = await contract.methods.productCount().call();
+//       const products = [];
+
+//       for (let i = 1; i <= count; i++) {
+//         const productInfo = await contract.methods
+//           .getProductBasicInfo(i)
+//           .call();
+//         if (productInfo.isValid && Number(productInfo.state) === 1) {
+//           const fees = await contract.methods.getProductFees(i).call();
+//           products.push({
+//             id: productInfo.id,
+//             name: productInfo.name,
+//             collectorFee: web3.utils.fromWei(fees.collectorFee, "ether"),
+//             state: productInfo.state,
+//           });
+//         }
+//       }
+
+//       setAvailableProducts(products);
+//     } catch (error) {
+//       console.error("Error fetching products:", error);
+//       setError("Failed to fetch available products");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (contract && account) {
+//       fetchAvailableProducts();
+//     }
+//   }, [contract, account]);
+
+//   const transportProduct = async () => {
+//     try {
+//       if (!selectedProductId) {
+//         setError("Please select a product first");
+//         return;
+//       }
+
+//       const product = availableProducts.find((p) => p.id === selectedProductId);
+//       const transporterFeeWei = web3.utils.toWei(transporterFee, "ether");
+//       const collectorFeeWei = web3.utils.toWei(product.collectorFee, "ether");
+
+//       await contract.methods
+//         .transportProduct(selectedProductId, transporterFeeWei)
+//         .send({ from: account, value: collectorFeeWei });
+
+//       setTransporterFee("");
+//       setSelectedProductId(null);
+//       await fetchAvailableProducts();
+//     } catch (error) {
+//       setError(error.message);
+//     }
+//   };
+
+//   return (
+//     <div className="space-y-6">
+//       <Card>
+//         <CardHeader>
+//           <CardTitle>Products Ready for Transport</CardTitle>
+//         </CardHeader>
+//         <CardContent className="space-y-4">
+//           {error && (
+//             <Alert variant="destructive">
+//               <AlertDescription>{error}</AlertDescription>
+//             </Alert>
+//           )}
+
+//           <ProductList
+//             products={availableProducts}
+//             onSelect={setSelectedProductId}
+//             selectedId={selectedProductId}
+//             stateLabel="Ready for Transport"
+//           />
+
+//           {selectedProductId && (
+//             <>
+//               <Input
+//                 placeholder="Your Transport Fee (ETH)"
+//                 type="number"
+//                 value={transporterFee}
+//                 onChange={(e) => setTransporterFee(e.target.value)}
+//               />
+//               <Button
+//                 onClick={transportProduct}
+//                 className="w-full"
+//                 disabled={!transporterFee}
+//               >
+//                 Transport and Pay
+//               </Button>
+//             </>
+//           )}
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+// };
+
+const TransporterDashboard: React.FC<DashboardProps> = ({
+  contract,
+  account,
+}) => {
+  const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { web3 } = useWeb3();
@@ -1354,10 +1741,28 @@ const TransporterDashboard = ({ contract, account }) => {
           .call();
         if (productInfo.isValid && Number(productInfo.state) === 1) {
           const fees = await contract.methods.getProductFees(i).call();
+
+          // Calculate transport fee based on distance (1 ETH per 100km)
+          const distance = Number(productInfo.distance || 0);
+          const transportFee = (distance / 100).toString();
+
+          // Calculate total fee (collector fee + transport fee)
+          const collectorFeeEth = web3
+            ? web3.utils.fromWei(fees.collectorFee, "ether")
+            : "0";
+          const totalFee = (
+            Number(collectorFeeEth) + Number(transportFee)
+          ).toString();
+
           products.push({
             id: productInfo.id,
             name: productInfo.name,
-            collectorFee: web3.utils.fromWei(fees.collectorFee, "ether"),
+            collectorFee: collectorFeeEth,
+            transporterFee: transportFee,
+            totalFee: totalFee,
+            distance: distance,
+            district: productInfo.district || "N/A",
+            localBody: productInfo.localBody || "N/A",
             state: productInfo.state,
           });
         }
@@ -1386,18 +1791,36 @@ const TransporterDashboard = ({ contract, account }) => {
       }
 
       const product = availableProducts.find((p) => p.id === selectedProductId);
-      const transporterFeeWei = web3.utils.toWei(transporterFee, "ether");
+      if (!web3) {
+        setError("Web3 not initialized");
+        return;
+      }
+      if (!product || !product.transporterFee) {
+        setError("Product or transporter fee is not defined");
+        return;
+      }
+      if (!product || !product.collectorFee) {
+        setError("Product or Collector fee is not defined");
+        return;
+      }
+      const transporterFeeWei = web3.utils.toWei(
+        product.transporterFee,
+        "ether"
+      );
       const collectorFeeWei = web3.utils.toWei(product.collectorFee, "ether");
 
       await contract.methods
         .transportProduct(selectedProductId, transporterFeeWei)
         .send({ from: account, value: collectorFeeWei });
 
-      setTransporterFee("");
       setSelectedProductId(null);
       await fetchAvailableProducts();
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
     }
   };
 
@@ -1417,40 +1840,67 @@ const TransporterDashboard = ({ contract, account }) => {
             </Alert>
           )}
 
-          <ProductList
-            products={availableProducts}
-            onSelect={setSelectedProductId}
-            selectedId={selectedProductId}
-            stateLabel="Ready for Transport"
-          />
+          <div className="space-y-4">
+            {availableProducts.map((product) => (
+              <div
+                key={product.id}
+                className={`p-4 border rounded-lg cursor-pointer ${
+                  selectedProductId === product.id
+                    ? "border-blue-500 bg-blue-50"
+                    : ""
+                }`}
+                onClick={() => setSelectedProductId(product.id)}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="space-y-2">
+                    <h3 className="font-medium">{product.name}</h3>
+                    <div className="text-sm text-gray-500">
+                      <p>
+                        Drop/Shipping Location: {product.localBody},{" "}
+                        {product.district}
+                      </p>
+                      <p>Distance: {product.distance?.toString()} km</p>
+                    </div>
+                  </div>
+                  <div className="text-right space-y-1">
+                    <p className="text-sm">
+                      Collector Fee: {product.collectorFee} ETH
+                    </p>
+                    <p className="text-sm">
+                      Transport Fee: {product.transporterFee} ETH
+                    </p>
+                    <p className="font-medium">
+                      Total Fee: {product.totalFee} ETH
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {selectedProductId && (
-            <>
-              <Input
-                placeholder="Your Transport Fee (ETH)"
-                type="number"
-                value={transporterFee}
-                onChange={(e) => setTransporterFee(e.target.value)}
-                className="bg-gray-50 border border-gray-200 rounded-md p-2"
-              />
-              <Button
-                onClick={transportProduct}
-                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
-                disabled={!transporterFee}
-              >
-                Transport and Pay
-              </Button>
-            </>
+            <Button onClick={transportProduct} className="w-full">
+              Accept and Transport
+            </Button>
           )}
         </CardContent>
       </Card>
+
+      <div className="w-full h-96 rounded-lg overflow-hidden">
+        <GoogleMap />
+      </div>
     </div>
   );
 };
 
-const DistributorDashboard = ({ contract, account }) => {
-  const [availableProducts, setAvailableProducts] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState(null);
+const DistributorDashboard: React.FC<DashboardProps> = ({
+  contract,
+  account,
+}) => {
+  const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
   const [distributorFee, setDistributorFee] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -1472,7 +1922,9 @@ const DistributorDashboard = ({ contract, account }) => {
           products.push({
             id: productInfo.id,
             name: productInfo.name,
-            transporterFee: web3.utils.fromWei(fees.transporterFee, "ether"),
+            transporterFee: web3
+              ? web3.utils.fromWei(fees.transporterFee, "ether")
+              : "0",
             state: productInfo.state,
           });
         }
@@ -1499,11 +1951,15 @@ const DistributorDashboard = ({ contract, account }) => {
         setError("Please select a product first");
         return;
       }
+      if (!web3) {
+        setError("Web3 not initialized");
+        return;
+      }
 
       const product = availableProducts.find((p) => p.id === selectedProductId);
       const distributorFeeWei = web3.utils.toWei(distributorFee, "ether");
       const transporterFeeWei = web3.utils.toWei(
-        product.transporterFee,
+        product?.transporterFee || "0",
         "ether"
       );
 
@@ -1515,7 +1971,11 @@ const DistributorDashboard = ({ contract, account }) => {
       setSelectedProductId(null);
       await fetchAvailableProducts();
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
     }
   };
 
@@ -1537,7 +1997,7 @@ const DistributorDashboard = ({ contract, account }) => {
 
           <ProductList
             products={availableProducts}
-            onSelect={setSelectedProductId}
+            onSelect={(id) => setSelectedProductId(id)}
             selectedId={selectedProductId}
             stateLabel="In Transit"
           />
@@ -1566,9 +2026,11 @@ const DistributorDashboard = ({ contract, account }) => {
   );
 };
 
-const RetailerDashboard = ({ contract, account }) => {
-  const [availableProducts, setAvailableProducts] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState(null);
+const RetailerDashboard: React.FC<DashboardProps> = ({ contract, account }) => {
+  const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
   const [retailerFee, setRetailerFee] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -1590,7 +2052,9 @@ const RetailerDashboard = ({ contract, account }) => {
           products.push({
             id: productInfo.id,
             name: productInfo.name,
-            distributorFee: web3.utils.fromWei(fees.distributorFee, "ether"),
+            distributorFee: web3
+              ? web3.utils.fromWei(fees.distributorFee, "ether")
+              : "0",
             state: productInfo.state,
           });
         }
@@ -1617,11 +2081,16 @@ const RetailerDashboard = ({ contract, account }) => {
         setError("Please select a product first");
         return;
       }
-
+      if (!web3) {
+        setError("Web3 not initialized");
+        return;
+      }
       const product = availableProducts.find((p) => p.id === selectedProductId);
-      const retailerFeeWei = web3.utils.toWei(retailerFee, "ether");
+      const retailerFeeWei = web3
+        ? web3.utils.toWei(retailerFee, "ether")
+        : "0";
       const distributorFeeWei = web3.utils.toWei(
-        product.distributorFee,
+        product?.distributorFee || "0",
         "ether"
       );
 
@@ -1633,7 +2102,11 @@ const RetailerDashboard = ({ contract, account }) => {
       setSelectedProductId(null);
       await fetchAvailableProducts();
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
     }
   };
 
@@ -1655,7 +2128,7 @@ const RetailerDashboard = ({ contract, account }) => {
 
           <ProductList
             products={availableProducts}
-            onSelect={setSelectedProductId}
+            onSelect={(id) => setSelectedProductId(id)}
             selectedId={selectedProductId}
             stateLabel="With Distributor"
           />
@@ -1691,57 +2164,157 @@ export {
   RetailerDashboard,
 };
 
-const TransactionHistory = ({ contract, account }) => {
-  const [transactions, setTransactions] = useState([]);
+const TransactionHistory: React.FC<DashboardProps> = ({
+  contract,
+  account,
+}) => {
+  const [transactions, setTransactions] = useState<any[]>([]);
+
+  // Helper function to get human-readable state names
+  const getStateName = (state: string): string => {
+    const states: { [key: string]: string } = {
+      "0": "Created",
+      "1": "Collected",
+      "2": "In Transit",
+      "3": "With Distributor",
+      "4": "With Retailer",
+      "5": "Sold",
+    };
+    return states[state] || state;
+  };
+
+  // Helper function to get state icon
+  const getStateIcon = (state: string): JSX.Element => {
+    switch (state) {
+      case "0":
+        return <Package className="w-5 h-5" />;
+      case "1":
+        return <Package className="w-5 h-5" />;
+      case "2":
+        return <Truck className="w-5 h-5" />;
+      case "3":
+        return <Store className="w-5 h-5" />;
+      case "4":
+        return <ShoppingBag className="w-5 h-5" />;
+      case "5":
+        return <Check className="w-5 h-5" />;
+      default:
+        return <Package className="w-5 h-5" />;
+    }
+  };
+
+  // Get color based on state
+  const getStateColor = (state: string): string => {
+    const colors = {
+      "0": "bg-blue-100 text-blue-800",
+      "1": "bg-purple-100 text-purple-800",
+      "2": "bg-yellow-100 text-yellow-800",
+      "3": "bg-green-100 text-green-800",
+      "4": "bg-pink-100 text-pink-800",
+      "5": "bg-gray-100 text-gray-800",
+    };
+    return colors[state as keyof typeof colors] || "bg-gray-100 text-gray-800";
+  };
 
   useEffect(() => {
     const fetchTransactionHistory = async () => {
       try {
-        // Get past events
         const events = await contract.getPastEvents("ProductStateChanged", {
           fromBlock: 0,
           toBlock: "latest",
         });
-        setTransactions(events);
+
+        // Fetch additional details for each event
+        const enhancedEvents = await Promise.all(
+          events.map(async (event: any) => {
+            const productInfo = await contract.methods
+              .getProductBasicInfo(event.returnValues.productId)
+              .call();
+
+            return {
+              ...event,
+              productName: productInfo.name,
+              timestamp: new Date().toLocaleString(), // Note: Using current time as placeholder
+              state: event.returnValues.newState,
+            };
+          })
+        );
+
+        setTransactions(enhancedEvents.reverse()); // Show newest first
       } catch (error) {
         console.error("Error fetching transaction history:", error);
       }
     };
 
-    fetchTransactionHistory();
+    if (contract) {
+      fetchTransactionHistory();
+    }
   }, [contract]);
 
   return (
-    <div className="space-y-6">
-      <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
-        <CardHeader className="flex items-center gap-2 p-6">
-          <History className="w-6 h-6 text-green-600" />
-          <CardTitle className="text-xl font-semibold text-gray-700">
-            Transaction History
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6 space-y-4">
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <History className="w-5 h-5" />
+          Transaction History
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
           {transactions.map((tx, index) => (
-            <Card
-              key={index}
-              className="bg-gray-50 border border-gray-100 rounded-lg shadow-sm"
-            >
-              <CardContent className="p-4">
-                <p className="font-semibold text-gray-700">
-                  Product ID: {tx.returnValues.productId}
-                </p>
-                <p className="text-sm text-gray-500">
-                  New State: {tx.returnValues.newState}
-                </p>
-                <p className="text-xs text-gray-400">
-                  Transaction: {tx.transactionHash}
-                </p>
-              </CardContent>
-            </Card>
+            <div key={tx.transactionHash} className="relative">
+              {/* Connection line between events */}
+              {index !== transactions.length - 1 && (
+                <div className="absolute left-6 top-12 w-0.5 h-16 bg-gray-100" />
+              )}
+
+              <div className="flex gap-4">
+                {/* Icon circle */}
+                <div
+                  className={`flex-shrink-0 w-12 h-12 rounded-full ${getStateColor(
+                    tx.state
+                  )} flex items-center justify-center`}
+                >
+                  {getStateIcon(tx.state)}
+                </div>
+
+                {/* Content */}
+                <div className="flex-grow bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-semibold text-lg">
+                      {tx.productName || `Product ${tx.returnValues.productId}`}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {tx.timestamp}
+                    </span>
+                  </div>
+
+                  <div className="text-sm text-gray-600">
+                    Status changed to:{" "}
+                    <span className="font-medium">
+                      {getStateName(tx.state)}
+                    </span>
+                  </div>
+
+                  <div className="mt-2 text-xs text-gray-400 truncate">
+                    Tx: {tx.transactionHash.substring(0, 6)}...
+                    {tx.transactionHash.substring(
+                      tx.transactionHash.length - 4
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           ))}
-        </CardContent>
-      </Card>
-    </div>
+
+          {transactions.length === 0 && (
+            <div className="text-center py-6 text-gray-500">
+              No transaction history available
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -1829,18 +2402,46 @@ export default function Home() {
   };
 
   // Effect to check user role whenever registration might have completed
+  // useEffect(() => {
+  //   const checkUserRole = async () => {
+  //     if (isActive && account && contract) {
+  //       try {
+  //         const role = await contract.methods.userRoles(account).call();
+  //         if (role && role !== "") {
+  //           setUserRole(role);
+  //           setShowRegistration(false);
+  //           setRegistrationComplete(true);
+  //         }
+  //       } catch (err) {
+  //         console.error("Error checking role:", err);
+  //       }
+  //     }
+  //   };
+
+  //   checkUserRole();
+  // }, [isActive, account, contract, registrationComplete]);
+
   useEffect(() => {
     const checkUserRole = async () => {
       if (isActive && account && contract) {
-        try {
-          const role = await contract.methods.userRoles(account).call();
-          if (role && role !== "") {
-            setUserRole(role);
-            setShowRegistration(false);
-            setRegistrationComplete(true);
+        if (
+          account.toLowerCase() ===
+          "0xD428DDce2d9129f6cD6dea7D88ccf1b9881DC863".toLowerCase()
+        ) {
+          setUserRole("ADMIN");
+          setShowRegistration(false);
+          setRegistrationComplete(true);
+        } else {
+          try {
+            const role = await contract.methods.userRoles(account).call();
+            if (role && role !== "") {
+              setUserRole(role);
+              setShowRegistration(false);
+              setRegistrationComplete(true);
+            }
+          } catch (err) {
+            console.error("Error checking role:", err);
           }
-        } catch (err) {
-          console.error("Error checking role:", err);
         }
       }
     };
@@ -1858,17 +2459,29 @@ export default function Home() {
   }, []);
 
   const renderDashboard = () => {
+    if (account === "0xD428DDce2d9129f6cD6dea7D88ccf1b9881DC863") {
+      return <AdminDashboard contract={contract} account={account} />;
+    }
+
     switch (userRole) {
       case "FARMER":
-        return <FarmerDashboard contract={contract} account={account} />;
+        return <FarmerDashboard contract={contract} account={account || ""} />;
       case "COLLECTOR":
-        return <CollectorDashboard contract={contract} account={account} />;
+        return (
+          <CollectorDashboard contract={contract} account={account || ""} />
+        );
       case "TRANSPORTER":
-        return <TransporterDashboard contract={contract} account={account} />;
+        return (
+          <TransporterDashboard contract={contract} account={account || ""} />
+        );
       case "DISTRIBUTOR":
-        return <DistributorDashboard contract={contract} account={account} />;
+        return (
+          <DistributorDashboard contract={contract} account={account || ""} />
+        );
       case "RETAILER":
-        return <RetailerDashboard contract={contract} account={account} />;
+        return (
+          <RetailerDashboard contract={contract} account={account || ""} />
+        );
       default:
         return (
           <Card>
@@ -1952,7 +2565,7 @@ export default function Home() {
   if (showRegistration) {
     return (
       <div className="container mx-auto p-4">
-        <UserRegistration contract={contract} account={account} />
+        <UserRegistration contract={contract} account={account || ""} />
       </div>
     );
   }
@@ -2023,7 +2636,10 @@ export default function Home() {
               </TabsContent>
 
               <TabsContent value="history" className="mt-6">
-                <TransactionHistory contract={contract} account={account} />
+                <TransactionHistory
+                  contract={contract}
+                  account={account || ""}
+                />
               </TabsContent>
             </Tabs>
           </div>

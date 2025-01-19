@@ -147,7 +147,7 @@ const getWeb3 = ()=>{
     }
     return null;
 };
-const CONTRACT_ADDRESS = "0x8ABA3a3533680d4C0f86C25b30842E25dB9f2A9a"; // Replace after deployment
+const CONTRACT_ADDRESS = "0xe2286B653546d83DbF9Fe64F00680BED5658f95A"; // Replace after deployment
 const CONTRACT_ABI = [
     {
         "inputs": [],
@@ -255,12 +255,107 @@ const CONTRACT_ABI = [
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "productId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "fromState",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "toState",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "by",
+                "type": "address"
+            }
+        ],
+        "name": "TransactionReverted",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "ADMIN",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+    },
+    {
         "inputs": [],
         "name": "productCount",
         "outputs": [
             {
                 "internalType": "uint256",
                 "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "productPayments",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint8",
+                "name": "fromState",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint8",
+                "name": "toState",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "timestamp",
                 "type": "uint256"
             }
         ],
@@ -304,6 +399,28 @@ const CONTRACT_ABI = [
                         "internalType": "bool",
                         "name": "isPaid",
                         "type": "bool"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "string",
+                                "name": "district",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "localBody",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "distance",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct ProductStructs.Location",
+                        "name": "location",
+                        "type": "tuple"
                     }
                 ],
                 "internalType": "struct ProductStructs.ProductDetails",
@@ -407,6 +524,19 @@ const CONTRACT_ABI = [
     {
         "inputs": [
             {
+                "internalType": "uint256",
+                "name": "_productId",
+                "type": "uint256"
+            }
+        ],
+        "name": "revertTransaction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "address",
                 "name": "_user",
                 "type": "address"
@@ -450,6 +580,21 @@ const CONTRACT_ABI = [
             {
                 "internalType": "uint256",
                 "name": "_collectorFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_district",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_localBody",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_distance",
                 "type": "uint256"
             }
         ],
@@ -538,6 +683,51 @@ const CONTRACT_ABI = [
                 "type": "uint256"
             }
         ],
+        "name": "getProductTransactions",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "from",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "to",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "amounts",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint8[]",
+                "name": "fromStates",
+                "type": "uint8[]"
+            },
+            {
+                "internalType": "uint8[]",
+                "name": "toStates",
+                "type": "uint8[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "timestamps",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_productId",
+                "type": "uint256"
+            }
+        ],
         "name": "getProductBasicInfo",
         "outputs": [
             {
@@ -564,6 +754,21 @@ const CONTRACT_ABI = [
                 "internalType": "bool",
                 "name": "isValid",
                 "type": "bool"
+            },
+            {
+                "internalType": "string",
+                "name": "district",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "localBody",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "distance",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -677,7 +882,78 @@ const CONTRACT_ABI = [
 
 var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, b: __turbopack_worker_blob_url__, g: global, __dirname, x: __turbopack_external_require__, y: __turbopack_external_import__, z: __turbopack_require_stub__ } = __turbopack_context__;
 {
-// src/contexts/Web3Context.tsx
+// 'use client';
+// import React, { createContext, useContext, useState, useEffect } from 'react';
+// import { useConnect, useDisconnect, useAccount } from 'wagmi';
+// import { injected } from '@wagmi/connectors';
+// import Web3 from 'web3';
+// import { CONTRACT_ABI, CONTRACT_ADDRESS } from '@/lib/web3Config';
+// interface Web3ContextType {
+//   connect: () => Promise<void>;
+//   disconnect: () => void;
+//   contract: any | null;
+//   account: string | null;
+//   isActive: boolean;
+//   web3: Web3 | null;
+//   error: string | null;
+// }
+// const Web3Context = createContext<Web3ContextType | null>(null);
+// export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
+//   const [web3, setWeb3] = useState<Web3 | null>(null);
+//   const [contract, setContract] = useState<any | null>(null);
+//   const [error, setError] = useState<string | null>(null);
+//   const { connect: connectWagmi } = useConnect({
+//     connector: injected(),
+//   });
+//   const { disconnect: disconnectWagmi } = useDisconnect();
+//   const { address, isConnected } = useAccount();
+//   useEffect(() => {
+//     if (window.ethereum) {
+//       const web3Instance = new Web3(window.ethereum);
+//       setWeb3(web3Instance);
+//       const contractInstance = new web3Instance.eth.Contract(
+//         CONTRACT_ABI,
+//         CONTRACT_ADDRESS
+//       );
+//       setContract(contractInstance);
+//     } else {
+//       setError('Ethereum provider not found');
+//     }
+//   }, []);
+//   const connect = async () => {
+//     try {
+//       await connectWagmi();
+//     } catch (err) {
+//       console.error('Connection error:', err);
+//       setError('Failed to connect');
+//     }
+//   };
+//   const disconnect = () => {
+//     disconnectWagmi();
+//   };
+//   return (
+//     <Web3Context.Provider
+//       value={{
+//         connect,
+//         disconnect,
+//         contract,
+//         account: address || null,
+//         isActive: isConnected,
+//         web3,
+//         error,
+//       }}
+//     >
+//       {children}
+//     </Web3Context.Provider>
+//   );
+// };
+// export const useWeb3 = () => {
+//   const context = useContext(Web3Context);
+//   if (!context) {
+//     throw new Error('useWeb3 must be used within a Web3Provider');
+//   }
+//   return context;
+// };
 __turbopack_esm__({
     "Web3Provider": (()=>Web3Provider),
     "useWeb3": (()=>useWeb3)
@@ -687,10 +963,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$ne
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$web3$40$4$2e$16$2e$0_bufferutil$40$4$2e$0$2e$9_typescript$40$5$2e$7$2e$3_utf$2d$8$2d$validate$40$5$2e$0$2e$10_zod$40$3$2e$24$2e$1$2f$node_modules$2f$web3$2f$lib$2f$esm$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_import__("[project]/node_modules/.pnpm/web3@4.16.0_bufferutil@4.0.9_typescript@5.7.3_utf-8-validate@5.0.10_zod@3.24.1/node_modules/web3/lib/esm/index.js [app-ssr] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/lib/web3Config.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useConnect$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/wagmi@2.14.7_@tanstack+query-core@5.64.0_@tanstack+react-query@5.64.0_react@19.0.0__@types+re_iogs5nkw2juifdsbjt5wwxuh5i/node_modules/wagmi/dist/esm/hooks/useConnect.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f40$wagmi$2b$core$40$2$2e$16$2e$3_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$types$2b$react$40$19$2e$0$2e$6_react$40$19$2e$0$2e$0_typescript$40$5$2e$_kfiku25gpkbyeq77f2embowl54$2f$node_modules$2f40$wagmi$2f$core$2f$dist$2f$esm$2f$connectors$2f$injected$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/@wagmi+core@2.16.3_@tanstack+query-core@5.64.0_@types+react@19.0.6_react@19.0.0_typescript@5._kfiku25gpkbyeq77f2embowl54/node_modules/@wagmi/core/dist/esm/connectors/injected.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useDisconnect$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/wagmi@2.14.7_@tanstack+query-core@5.64.0_@tanstack+react-query@5.64.0_react@19.0.0__@types+re_iogs5nkw2juifdsbjt5wwxuh5i/node_modules/wagmi/dist/esm/hooks/useDisconnect.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/wagmi@2.14.7_@tanstack+query-core@5.64.0_@tanstack+react-query@5.64.0_react@19.0.0__@types+re_iogs5nkw2juifdsbjt5wwxuh5i/node_modules/wagmi/dist/esm/hooks/useAccount.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$web3$40$4$2e$16$2e$0_bufferutil$40$4$2e$0$2e$9_typescript$40$5$2e$7$2e$3_utf$2d$8$2d$validate$40$5$2e$0$2e$10_zod$40$3$2e$24$2e$1$2f$node_modules$2f$web3$2f$lib$2f$esm$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_import__("[project]/node_modules/.pnpm/web3@4.16.0_bufferutil@4.0.9_typescript@5.7.3_utf-8-validate@5.0.10_zod@3.24.1/node_modules/web3/lib/esm/index.js [app-ssr] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f40$wagmi$2b$core$40$2$2e$16$2e$3_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$types$2b$react$40$19$2e$0$2e$6_react$40$19$2e$0$2e$0_typescript$40$5$2e$_kfiku25gpkbyeq77f2embowl54$2f$node_modules$2f40$wagmi$2f$core$2f$dist$2f$esm$2f$connectors$2f$injected$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/@wagmi+core@2.16.3_@tanstack+query-core@5.64.0_@types+react@19.0.6_react@19.0.0_typescript@5._kfiku25gpkbyeq77f2embowl54/node_modules/@wagmi/core/dist/esm/connectors/injected.js [app-ssr] (ecmascript)");
 'use client';
 ;
 ;
@@ -702,28 +977,35 @@ const Web3Context = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project
 const Web3Provider = ({ children })=>{
     const [web3, setWeb3] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [contract, setContract] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const { connect: connectWagmi } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useConnect$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useConnect"])({
-        connector: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f40$wagmi$2b$core$40$2$2e$16$2e$3_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$types$2b$react$40$19$2e$0$2e$6_react$40$19$2e$0$2e$0_typescript$40$5$2e$_kfiku25gpkbyeq77f2embowl54$2f$node_modules$2f40$wagmi$2f$core$2f$dist$2f$esm$2f$connectors$2f$injected$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["injected"])()
-    });
-    const { disconnect: disconnectWagmi } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useDisconnect$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDisconnect"])();
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    // Use wagmi v2 hooks
+    const { connectAsync } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useConnect$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useConnect"])();
+    const { disconnectAsync } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useDisconnect$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDisconnect"])();
     const { address, isConnected } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$wagmi$40$2$2e$14$2e$7_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$tanstack$2b$react$2d$query$40$5$2e$64$2e$0_react$40$19$2e$0$2e$0_$5f40$types$2b$re_iogs5nkw2juifdsbjt5wwxuh5i$2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAccount"])();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (window.ethereum) {
-            const web3Instance = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$web3$40$4$2e$16$2e$0_bufferutil$40$4$2e$0$2e$9_typescript$40$5$2e$7$2e$3_utf$2d$8$2d$validate$40$5$2e$0$2e$10_zod$40$3$2e$24$2e$1$2f$node_modules$2f$web3$2f$lib$2f$esm$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"](window.ethereum);
-            setWeb3(web3Instance);
-            const contractInstance = new web3Instance.eth.Contract(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CONTRACT_ABI"], __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$web3Config$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CONTRACT_ADDRESS"]);
-            setContract(contractInstance);
+        if ("TURBOPACK compile-time falsy", 0) {
+            "TURBOPACK unreachable";
+        } else {
+            setError('Ethereum provider not found');
         }
     }, []);
     const connect = async ()=>{
         try {
-            await connectWagmi();
-        } catch (error) {
-            console.error('Connection error:', error);
+            await connectAsync({
+                connector: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f40$wagmi$2b$core$40$2$2e$16$2e$3_$40$tanstack$2b$query$2d$core$40$5$2e$64$2e$0_$40$types$2b$react$40$19$2e$0$2e$6_react$40$19$2e$0$2e$0_typescript$40$5$2e$_kfiku25gpkbyeq77f2embowl54$2f$node_modules$2f40$wagmi$2f$core$2f$dist$2f$esm$2f$connectors$2f$injected$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["injected"])()
+            });
+        } catch (err) {
+            console.error('Connection error:', err);
+            setError('Failed to connect');
         }
     };
-    const disconnect = ()=>{
-        disconnectWagmi();
+    const disconnect = async ()=>{
+        try {
+            await disconnectAsync();
+        } catch (err) {
+            console.error('Disconnect error:', err);
+            setError('Failed to disconnect');
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$4_$40$babel$2b$core$40$7$2e$26$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Web3Context.Provider, {
         value: {
@@ -732,12 +1014,13 @@ const Web3Provider = ({ children })=>{
             contract,
             account: address || null,
             isActive: isConnected,
-            web3
+            web3,
+            error
         },
         children: children
     }, void 0, false, {
         fileName: "[project]/src/contexts/web3Context.tsx",
-        lineNumber: 57,
+        lineNumber: 150,
         columnNumber: 5
     }, this);
 };

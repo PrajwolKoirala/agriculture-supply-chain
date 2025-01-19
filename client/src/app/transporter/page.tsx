@@ -8,7 +8,7 @@ import { Truck } from "lucide-react";
 import { Contract } from "web3-eth-contract";
 
 interface TransporterDashboardProps {
-  contract: Contract;
+  contract: Contract<any>;
   account: string;
 }
 

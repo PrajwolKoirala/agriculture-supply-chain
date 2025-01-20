@@ -2,12 +2,6 @@
   "app": {
     "[project]/src/app/page": [
       "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.7b3669ea.woff2"
-<<<<<<< HEAD
-=======
-    ],
-    "[project]/src/app/_not-found/page": [
-      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.7b3669ea.woff2"
->>>>>>> 9a3f35e1300c8a35a6c1bf9c92fc74963f01e5ef
     ]
   },
   "appUsingSizeAdjust": true,

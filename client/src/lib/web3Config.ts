@@ -16,7 +16,7 @@ export const getWeb3 = () => {
 //   const networkId = "5777"; // Update based on the current network ID
 //   return AgriSupplyChain.networks[networkId]?.address || null;
 // };
-export const CONTRACT_ADDRESS = "0xe2286B653546d83DbF9Fe64F00680BED5658f95A"; // Replace after deployment
+export const CONTRACT_ADDRESS = "0xcF554Da90CB1EBdd99230370e093339cF09926e5"; // Replace after deployment
 
 // export const CONTRACT_ADDRESS = getContractAddress();
 export const CONTRACT_ABI = [

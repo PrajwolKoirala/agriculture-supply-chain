@@ -247,7 +247,7 @@ contract AgriSupplyChain is IAgriSupplyChain {
 
     mapping(uint256 => Payment[]) public productPayments;
 
-    address public constant ADMIN = 0xD428DDce2d9129f6cD6dea7D88ccf1b9881DC863;
+    address public constant ADMIN = 0xF7084F4E361ce391EFD9F983d13887322A0Bc86f;
 
     uint8 constant CREATED = 0;
     uint8 constant COLLECTED = 1;

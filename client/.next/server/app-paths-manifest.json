@@ -1,9 +1,4 @@
 {
   "/page": "app/page.js",
-<<<<<<< HEAD
   "/favicon.ico/route": "app/favicon.ico/route.js"
-=======
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/_not-found/page": "app/_not-found/page.js"
->>>>>>> 9a3f35e1300c8a35a6c1bf9c92fc74963f01e5ef
 }

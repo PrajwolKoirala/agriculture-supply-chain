@@ -10,7 +10,7 @@
   "sourceMap": "60:824:2:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;60:824:2;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "60:824:2:-:0;;;;;;;;",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\nlibrary ProductStructs {\r\n struct Location {\r\n        string district;\r\n        string localBody;\r\n        uint256 distance;\r\n    }\r\n\r\n    struct ProductDetails {\r\n        string name;\r\n        uint256 basePrice;\r\n        bool isValid;\r\n        bool isPaid;\r\n        Location location;\r\n    }\r\n    struct ProductActors {\r\n        address farmer;\r\n        address collector;\r\n        address transporter;\r\n        address distributor;\r\n        address retailer;\r\n        address consumer;\r\n    }\r\n\r\n    struct ProductFees {\r\n        uint256 collectorFee;\r\n        uint256 transporterFee;\r\n        uint256 distributorFee;\r\n        uint256 retailerFee;\r\n    }\r\n\r\n    struct Product {\r\n        uint256 id;\r\n        ProductDetails details;\r\n        ProductActors actors;\r\n        ProductFees fees;\r\n        uint8 state;\r\n    }\r\n}\r\n",
-  "sourcePath": "C:\\Users\\hp\\OneDrive\\Desktop\\supplychain\\contracts\\ProductStructs.sol",
+  "sourcePath": "C:\\Users\\Dell\\OneDrive\\Desktop\\agriculture-supply-chain\\contracts\\ProductStructs.sol",
   "ast": {
     "absolutePath": "project:/contracts/ProductStructs.sol",
     "exportedSymbols": {
@@ -746,7 +746,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-01-19T05:38:54.502Z",
+  "updatedAt": "2025-01-19T13:34:13.914Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

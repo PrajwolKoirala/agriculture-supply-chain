@@ -1004,6 +1004,9 @@ import {
   Check,
   ChevronsUpDown,
 } from "lucide-react";
+
+import Head from "../../node_modules/next/head";
+
 import UserRegistration from "./registration/page";
 import AdminDashboard from "./admin/page";
 import { districtsData, localBodiesData } from "@/lib/LocationData";
@@ -1246,6 +1249,9 @@ const FarmerDashboard: React.FC<DashboardProps> = ({ contract, account }) => {
 
   return (
     <div className="space-y-6">
+      <Head>
+        <title>Agrisupply chain</title>
+      </Head>
       <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100">
         <CardHeader className="flex items-center gap-2 p-6">
           <Wheat className="w-6 h-6 text-green-600" />
@@ -1533,12 +1539,30 @@ const CollectorDashboard: React.FC<DashboardProps> = ({
             </Alert>
           )}
 
-          <ProductList
-            products={availableProducts}
-            onSelect={(id) => setSelectedProductId(id)}
-            selectedId={selectedProductId}
-            stateLabel="Available"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {availableProducts.map((product) => (
+              <div
+                key={product.id}
+                className={`p-4 border rounded-lg cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                  selectedProductId === product.id
+                    ? "border-green-500 bg-green-50"
+                    : "border-gray-200 bg-white"
+                }`}
+                onClick={() => setSelectedProductId(product.id)}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="space-y-2">
+                    <h3 className="font-medium text-gray-700">
+                      {product.name}
+                    </h3>
+                    <div className="text-sm text-gray-500">
+                      <p>Base Price: {product.basePrice} ETH</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {selectedProductId && (
             <>
@@ -1572,7 +1596,7 @@ const CollectorDashboard: React.FC<DashboardProps> = ({
                 type="number"
                 value={distance}
                 onChange={(e) => setDistance(e.target.value)}
-                className="mt-4"
+                className="bg-gray-50 border border-gray-200 rounded-md p-2 mt-4"
               />
 
               <Input
@@ -1580,12 +1604,12 @@ const CollectorDashboard: React.FC<DashboardProps> = ({
                 type="number"
                 value={collectorFee}
                 onChange={(e) => setCollectorFee(e.target.value)}
-                className="bg-gray-50 border border-gray-200 rounded-md p-2"
+                className="bg-gray-50 border border-gray-200 rounded-md p-2 mt-4"
               />
 
               <Button
                 onClick={collectProduct}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02] mt-4"
                 disabled={
                   !collectorFee ||
                   !selectedDistrict ||
@@ -1840,20 +1864,22 @@ const TransporterDashboard: React.FC<DashboardProps> = ({
             </Alert>
           )}
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {availableProducts.map((product) => (
               <div
                 key={product.id}
-                className={`p-4 border rounded-lg cursor-pointer ${
+                className={`p-4 border rounded-lg cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                   selectedProductId === product.id
-                    ? "border-blue-500 bg-blue-50"
-                    : ""
+                    ? "border-green-500 bg-green-50"
+                    : "border-gray-200 bg-white"
                 }`}
                 onClick={() => setSelectedProductId(product.id)}
               >
                 <div className="flex justify-between items-start">
                   <div className="space-y-2">
-                    <h3 className="font-medium">{product.name}</h3>
+                    <h3 className="font-medium text-gray-700">
+                      {product.name}
+                    </h3>
                     <div className="text-sm text-gray-500">
                       <p>
                         Drop/Shipping Location: {product.localBody},{" "}
@@ -1863,13 +1889,13 @@ const TransporterDashboard: React.FC<DashboardProps> = ({
                     </div>
                   </div>
                   <div className="text-right space-y-1">
-                    <p className="text-sm">
+                    <p className="text-sm text-gray-500">
                       Collector Fee: {product.collectorFee} ETH
                     </p>
-                    <p className="text-sm">
+                    <p className="text-sm text-gray-500">
                       Transport Fee: {product.transporterFee} ETH
                     </p>
-                    <p className="font-medium">
+                    <p className="font-medium text-gray-700">
                       Total Fee: {product.totalFee} ETH
                     </p>
                   </div>
@@ -1879,9 +1905,14 @@ const TransporterDashboard: React.FC<DashboardProps> = ({
           </div>
 
           {selectedProductId && (
-            <Button onClick={transportProduct} className="w-full">
-              Accept and Transport
-            </Button>
+            <div className="flex justify-end">
+              <Button
+                onClick={transportProduct}
+                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
+              >
+                Accept and Transport
+              </Button>
+            </div>
           )}
         </CardContent>
       </Card>
@@ -1995,13 +2026,35 @@ const DistributorDashboard: React.FC<DashboardProps> = ({
             </Alert>
           )}
 
-          <ProductList
-            products={availableProducts}
-            onSelect={(id) => setSelectedProductId(id)}
-            selectedId={selectedProductId}
-            stateLabel="In Transit"
-          />
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {availableProducts.map((product) => (
+              <div
+                key={product.id}
+                className={`p-4 border rounded-lg cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                  selectedProductId === product.id
+                    ? "border-green-500 bg-green-50"
+                    : "border-gray-200 bg-white"
+                }`}
+                onClick={() => setSelectedProductId(product.id)}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="space-y-2">
+                    <h3 className="font-medium text-gray-700">
+                      {product.name}
+                    </h3>
+                    <div className="text-sm text-gray-500">
+                      <p>State: In Transit</p>
+                    </div>
+                  </div>
+                  <div className="text-right space-y-1">
+                    <p className="text-sm text-gray-500">
+                      Transporter Fee: {product.transporterFee} ETH
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
           {selectedProductId && (
             <>
               <Input
@@ -2009,11 +2062,11 @@ const DistributorDashboard: React.FC<DashboardProps> = ({
                 type="number"
                 value={distributorFee}
                 onChange={(e) => setDistributorFee(e.target.value)}
-                className="bg-gray-50 border border-gray-200 rounded-md p-2"
+                className="bg-gray-50 border border-gray-200 rounded-md p-2 mt-4"
               />
               <Button
                 onClick={distributeProduct}
-                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02] mt-4"
                 disabled={!distributorFee}
               >
                 Distribute and Pay
@@ -2126,12 +2179,35 @@ const RetailerDashboard: React.FC<DashboardProps> = ({ contract, account }) => {
             </Alert>
           )}
 
-          <ProductList
-            products={availableProducts}
-            onSelect={(id) => setSelectedProductId(id)}
-            selectedId={selectedProductId}
-            stateLabel="With Distributor"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {availableProducts.map((product) => (
+              <div
+                key={product.id}
+                className={`p-4 border rounded-lg cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                  selectedProductId === product.id
+                    ? "border-green-500 bg-green-50"
+                    : "border-gray-200 bg-white"
+                }`}
+                onClick={() => setSelectedProductId(product.id)}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="space-y-2">
+                    <h3 className="font-medium text-gray-700">
+                      {product.name}
+                    </h3>
+                    <div className="text-sm text-gray-500">
+                      <p>State: With Distributor</p>
+                    </div>
+                  </div>
+                  <div className="text-right space-y-1">
+                    <p className="text-sm text-gray-500">
+                      Distributor Fee: {product.distributorFee} ETH
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {selectedProductId && (
             <>
@@ -2140,11 +2216,11 @@ const RetailerDashboard: React.FC<DashboardProps> = ({ contract, account }) => {
                 type="number"
                 value={retailerFee}
                 onChange={(e) => setRetailerFee(e.target.value)}
-                className="bg-gray-50 border border-gray-200 rounded-md p-2"
+                className="bg-gray-50 border border-gray-200 rounded-md p-2 mt-4"
               />
               <Button
                 onClick={sendToRetail}
-                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02] mt-4"
                 disabled={!retailerFee}
               >
                 Accept and Pay
@@ -2426,7 +2502,7 @@ export default function Home() {
       if (isActive && account && contract) {
         if (
           account.toLowerCase() ===
-          "0xD428DDce2d9129f6cD6dea7D88ccf1b9881DC863".toLowerCase()
+          "0xF7084F4E361ce391EFD9F983d13887322A0Bc86f".toLowerCase()
         ) {
           setUserRole("ADMIN");
           setShowRegistration(false);
@@ -2459,7 +2535,7 @@ export default function Home() {
   }, []);
 
   const renderDashboard = () => {
-    if (account === "0xD428DDce2d9129f6cD6dea7D88ccf1b9881DC863") {
+    if (account === "0xF7084F4E361ce391EFD9F983d13887322A0Bc86f") {
       return <AdminDashboard contract={contract} account={account} />;
     }
 

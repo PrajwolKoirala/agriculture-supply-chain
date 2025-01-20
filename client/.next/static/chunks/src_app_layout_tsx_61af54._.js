@@ -15,7 +15,7 @@
     "static/chunks/1e683_@noble_curves_esm_afbe46._.js",
     "static/chunks/node_modules_web3-eth_lib_esm_b7a5a6._.js",
     "static/chunks/node_modules_web3-eth-abi_lib_esm_3d92b1._.js",
-    "static/chunks/node_modules_028001._.js",
+    "static/chunks/node_modules_d5bfa4._.js",
     "static/chunks/src_c8a1d7._.js"
   ],
   "source": "dynamic"

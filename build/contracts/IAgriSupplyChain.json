@@ -261,7 +261,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ninterface IAgriSupplyChain {\r\n    event ProductCreated(uint256 productId, string name, uint256 price, address farmer);\r\n    event ProductStateChanged(uint256 productId, uint8 newState);\r\n    event PaymentProcessed(address from, address to, uint256 amount);\r\n    event FeeAdded(uint256 productId, address entity, uint256 fee);\r\n    \r\n    function registerUser(address _user, string memory _role) external;\r\n    \r\n    // Split get functions to avoid stack too deep\r\nfunction getProductBasicInfo(uint256 _productId) external view returns (\r\n    uint256 id,\r\n    string memory name,\r\n    uint256 basePrice,\r\n    uint8 state,\r\n    bool isValid,\r\n    string memory district,\r\n    string memory localBody,\r\n    uint256 distance\r\n); \r\n    function getProductFees(uint256 _productId) external view returns (\r\n        uint256 collectorFee,\r\n        uint256 transporterFee,\r\n        uint256 distributorFee,\r\n        uint256 retailerFee\r\n    );\r\n    \r\n    function getProductActors(uint256 _productId) external view returns (\r\n        address farmer,\r\n        address collector,\r\n        address transporter,\r\n        address distributor,\r\n        address retailer,\r\n        address consumer\r\n    );\r\n}",
-  "sourcePath": "C:\\Users\\hp\\OneDrive\\Desktop\\supplychain\\contracts\\IAgriSupplyChain.sol",
+  "sourcePath": "C:\\Users\\Dell\\OneDrive\\Desktop\\agriculture-supply-chain\\contracts\\IAgriSupplyChain.sol",
   "ast": {
     "absolutePath": "project:/contracts/IAgriSupplyChain.sol",
     "exportedSymbols": {
@@ -1410,7 +1410,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-01-19T05:38:54.500Z",
+  "updatedAt": "2025-01-19T13:34:13.911Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
